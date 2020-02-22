@@ -9,14 +9,12 @@ let accounts = [
 		accounts: [
 			{
 				accountNumber: 111111,
-				accountType: "CA",
 				currency: "$",
 				balance: 10000.0,
 				extractionLimit: 1000
 			},
 			{
 				accountNumber: 222222,
-				accountType: "CC",
 				currency: "US$",
 				balance: 500.0,
 				extractionLimit: 1000
@@ -29,14 +27,12 @@ let accounts = [
 		accounts: [
 			{
 				accountNumber: 333333,
-				accountType: "CA",
 				currency: "$",
 				balance: 10000.0,
 				extractionLimit: 1000
 			},
 			{
 				accountNumber: 444444,
-				accountType: "CC",
 				currency: "US$",
 				balance: 500.0,
 				extractionLimit: 1000
