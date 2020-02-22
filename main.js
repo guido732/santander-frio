@@ -55,8 +55,23 @@ server.listen(3000, () => {
 
 server.use(bodyParser.json());
 
+// Register new user
+server.post("/register", validateExistingUser, (req, res) => {
+	// TODO: Corroborar que las variables sean igual que lo que se manda desde el front
+	const { dni, password, fullname } = req.body; /// ver nmombre de user
+	userDb.push({ dni, password });
+	createAccount(dni, fullname);
+	res.status(200).json("Usuario registrado correctamente");
+});
+
+//User login
+server.post("/login", userLogin, (req, res) => {
+	// TODO: Corroborar que las variables sean igual que lo que se manda desde el front
+	res.status(200).json(activeUser);
+});
+
 // InternalTransference
-server.put("/account/operations/internaltransfer", validateExistingUser, (req, res) => {
+server.put("/account/operations/internaltransfer", getActiveUser, (req, res) => {
 	// Agregar middleware VALIDARCUENTAORIGEN/TOKEN
 	const { amount, destinationAccountNum, originAccountNum } = req.body;
 	const { activeUserIndex, activeUser } = res.locals;
@@ -90,6 +105,58 @@ server.put("/account/operations/internaltransfer", validateExistingUser, (req, r
 
 // UTILS
 function validateExistingUser(req, res, next) {
+	const { dni } = req.body;
+	const existingUser = findUser(dni, res);
+	if (!existingUser) {
+		next();
+	} else {
+		res.status(500).send("Usuario Existente. Por favor inicie sesión");
+	}
+}
+function findUser(userDni, res) {
+	const foundUser = userDb.find(user => +user.dni === +userDni);
+	if (foundUser) {
+		return foundUser;
+	} else {
+		return false;
+	}
+}
+function findUserData(userDni) {
+	const foundData = accounts.find(accounts => +accounts.dni === +userDni);
+	return foundData;
+}
+function userLogin(req, res, next) {
+	const { dni, password } = req.body;
+	const existingUser = findUser(dni);
+	const userPassword = existingUser.password;
+	if (password === userPassword) {
+		const userData = findUserData(dni);
+		activeUser = userData;
+		next();
+	} else {
+		res.status(500).send("Contraseña Incorrecta. Intente nuevamente");
+	}
+}
+function createAccount(dni, fullname) {
+	const newAccount = {
+		fullname: fullname,
+		dni: dni,
+		accounts: [
+			{
+				accountNumber: generateNewAccountNumber,
+				accountType: "CA",
+				currency: "$",
+				balance: 0,
+				extractionLimit: 1000
+			}
+		]
+	};
+	accounts.push(newAccount);
+}
+function generateNewAccountNumber() {
+	return Math.floor(Math.random() * 100000000);
+}
+function getActiveUser(req, res, next) {
 	const { userID } = req.body;
 	const activeUser = accounts.find(account => account.dni === userID);
 	const activeUserIndex = accounts.indexOf(activeUser);
