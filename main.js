@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const server = express();
 
 let accounts = [
@@ -49,7 +50,7 @@ server.listen(3000, () => {
 	console.log("Server started");
 });
 
-server.use(bodyParser.json());
+server.use(bodyParser.json(), cors());
 
 // Register new user
 server.post("/register", validateExistingUser, (req, res) => {
