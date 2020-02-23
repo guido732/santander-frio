@@ -88,6 +88,14 @@ server.get("/v1/users/accounts", (req, res) => {
   res.status(200).json(userData);
 }); // El caso de error se maneja por el general, ya que este GET se hace una vez logueado el
 //Usuario por lo que el DNI ya esta previamente validado por los otros metodos.
+
+//User logout
+server.post("/v1/users/logout", (req, res) => {
+  res
+    .status(200)
+    .json("Sesion finalizada correctamente. Gracias por utilizar el servicio!");
+});
+
 // InternalTransference
 server.put("/account/operations/internaltransfer", getActiveUser, (req, res) => {
 	// Agregar middleware VALIDARCUENTAORIGEN/TOKEN
