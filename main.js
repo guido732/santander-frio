@@ -160,10 +160,10 @@ function userLogin(req, res, next) {
       req.userData = userData;
 		next();
 	} else {
-      res.status(401).send("Esa no es la contraseña... Intentá nuevamente."); // TODO: mostrar en el front
+      res.status(401).json("Esa no es la contraseña... Intentá nuevamente."); // TODO: mostrar en el front
     }
   } else {
-    res.status(404).send(
+    res.status(404).json(
       "Ese Usuario no existe! Intenta nuevamente o registrate para acceeder al servicio." //TODO: mostrar en el front
     );
 	}
