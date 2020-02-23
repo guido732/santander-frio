@@ -3,6 +3,17 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const server = express();
 
+let userDb = [
+  {
+    dni: "30111000",
+    password: "pedrogato123"
+  },
+  {
+    dni: "20999111",
+    password: "marioperro123"
+  }
+];
+
 let accounts = [
 	{
 		fullname: "Pedro Gato",
@@ -24,7 +35,7 @@ let accounts = [
 	},
 	{
 		fullname: "Mario Perro",
-		dni: "30111001",
+    dni: "20999111",
 		accounts: [
 			{
 				accountNumber: 333333,
@@ -41,6 +52,7 @@ let accounts = [
 		]
 	}
 ];
+
 const currencyExange = {
 	$: 58.5,
 	US$: 63.5
@@ -53,12 +65,12 @@ server.listen(3000, () => {
 server.use(bodyParser.json(), cors());
 
 // Register new user
-server.post("/register", validateExistingUser, (req, res) => {
+server.post("/v1/users/newuser", validateExistingUser, (req, res) => {
 	// TODO: Corroborar que las variables sean igual que lo que se manda desde el front
-	const { dni, password, fullname } = req.body; /// ver nmombre de user
+  const { dni, password, fullname } = req.body;
 	userDb.push({ dni, password });
 	createAccount(dni, fullname);
-	res.status(200).json("Usuario registrado correctamente");
+  res.status(200).json("User created");
 });
 
 //User login
@@ -107,9 +119,9 @@ function validateExistingUser(req, res, next) {
 	if (!existingUser) {
 		next();
 	} else {
-		res.status(500).send("Usuario Existente. Por favor inicie sesión");
-	}
-}
+    res
+      .status(409)
+    res.status(409).json("User already exists");
 function findUser(userDni, res) {
 	const foundUser = userDb.find(user => +user.dni === +userDni);
 	if (foundUser) {
