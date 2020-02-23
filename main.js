@@ -70,7 +70,13 @@ server.post("/v1/users/newuser", validateExistingUser, (req, res) => {
   const { dni, password, fullname } = req.body;
 	userDb.push({ dni, password });
 	createAccount(dni, fullname);
+<<<<<<< HEAD
   res.status(200).json("User created");
+=======
+  res.status(200).json(
+    "Genial! Te registraste correctamente. Ya podes a empezar a utilizar el servicio." //TODO: deberiamos tomar este msj y mostrarlo en un modal
+  );
+>>>>>>> Adding DB. Minor fixings. Setting res and status.
 });
 
 //User login
@@ -121,7 +127,13 @@ function validateExistingUser(req, res, next) {
 	} else {
     res
       .status(409)
+<<<<<<< HEAD
     res.status(409).json("User already exists");
+=======
+      .send("Ups! Ese Usuario ya existe. Por favor iniciá sesión."); //TODO: mostrar mensaje en el front
+	}
+}
+>>>>>>> Adding DB. Minor fixings. Setting res and status.
 function findUser(userDni, res) {
 	const foundUser = userDb.find(user => +user.dni === +userDni);
 	if (foundUser) {
