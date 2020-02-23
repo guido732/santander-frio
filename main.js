@@ -69,30 +69,32 @@ server.post("/login", userLogin, (req, res) => {
 
 // InternalTransference
 // Validación de cuentas internas (que existan)
-// Validación de monto (no números negativos)
 server.put("/account/operations/internaltransfer", getActiveUser, validateAmount, (req, res) => {
 	// Agregar middleware VALIDARCUENTAORIGEN/TOKEN
-	const { amount, destinationAccountNum, originAccountNum } = req.body;
+	const { amount, originAccountNum, destinationAccountNum } = req.body;
 	const { activeUserIndex, activeUser } = res.locals;
 	// Obtiene indice de cuentas
 	const destinationAccountIndex = getAccountIndex(activeUser, +destinationAccountNum);
 	const originAccountIndex = getAccountIndex(activeUser, +originAccountNum);
+	if (validateExistingAccounts(activeUser, +originAccountNum, activeUser, +destinationAccountNum)) {
+		// TODO: Validar montos suficientes
+		if (validateSufficientFunds(activeUser, originAccountIndex, +amount)) {
+			// Realiza conversión de moneda
+			const originCurrency = activeUser.accounts[originAccountIndex].currency;
+			const destinationCurrency = activeUser.accounts[destinationAccountIndex].currency;
+			const transformedAmount = applyCurrencyExange(+amount, originCurrency, destinationCurrency);
 
-	// TODO: Validar montos suficientes
-	if (validateSufficientFunds(activeUser, originAccountIndex, +amount)) {
-		// Realiza conversión de moneda
-		const originCurrency = activeUser.accounts[originAccountIndex].currency;
-		const destinationCurrency = activeUser.accounts[destinationAccountIndex].currency;
-		const transformedAmount = applyCurrencyExange(+amount, originCurrency, destinationCurrency);
+			// Realiza operación
+			accounts[activeUserIndex].accounts[originAccountIndex].balance -= +amount;
+			accounts[activeUserIndex].accounts[destinationAccountIndex].balance += +transformedAmount;
 
-		// Realiza operación
-		accounts[activeUserIndex].accounts[originAccountIndex].balance -= +amount;
-		accounts[activeUserIndex].accounts[destinationAccountIndex].balance += +transformedAmount;
-
-		// Retorna nuevo activeUser info
-		res.status(200).json(accounts[activeUserIndex]);
+			// Retorna nuevo activeUser info
+			res.status(200).json(accounts[activeUserIndex]);
+		} else {
+			res.status(412).send("Insufficient funds to perform operation on origin account");
+		}
 	} else {
-		res.status(412).send("Insufficient funds to perform operation on origin account");
+		res.status(404).send("Account(s) not found");
 	}
 });
 
@@ -199,7 +201,16 @@ function getActiveUser(req, res, next) {
 }
 function validateAmount(req, res, next) {
 	const { amount } = req.body;
-	return amount > 0 ? next() : res.status(400).send("Invalid amount of transference");
+	return amount > 0 ? next() : res.status(400).send("Invalid amount for operation");
+}
+function validateExistingAccounts(originUser, originAccountNum, destinationUser, destinationAccountNum) {
+	const originAccountValidation = originUser.accounts.filter(acc => acc.accountNumber === originAccountNum);
+	const destinationAccountValidation = destinationUser.accounts.filter(
+		acc => acc.accountNumber === destinationAccountNum
+	);
+	console.log(!!originAccountValidation.length, !!destinationAccountValidation.length);
+
+	return !!originAccountValidation.length && !!destinationAccountValidation.length;
 }
 function validateSufficientFunds(activeUser, originAccountIndex, amount) {
 	return activeUser.accounts[originAccountIndex].balance - amount >= 0 ? true : false;
