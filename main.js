@@ -99,31 +99,31 @@ server.put("/account/operations/internaltransfer", getActiveUser, validateAmount
 // ExternalTransference
 server.put("/account/operations/externaltransfer", getActiveUser, validateAmount, (req, res) => {
 	// Agregar middleware VALIDARCUENTAORIGEN/TOKEN
+	// Obtiene datos del body + cuenta origen e Index de cuenta origen desde el res.locals
 	const { amount, destinationAccountNum, originAccountNum } = req.body;
-	const { activeUserIndex, activeUser } = res.locals;
+	const { activeUserIndex: originUserIndex, activeUser: originUser } = res.locals;
 
 	const destinationUser = getAccountFromAccountNumber(+destinationAccountNum);
 	const destinationUserIndex = accounts.indexOf(destinationUser);
 	// Valida que existan las cuentas
-	// Duplicado con getAccountIndex -> aprovechar validación
-	if (destinationUser && activeUser) {
+	if (originUser && destinationUser) {
 		// Obtiene indice de cuentas
-		const originAccountIndex = getAccountIndex(activeUser, +originAccountNum);
+		const originAccountIndex = getAccountIndex(originUser, +originAccountNum);
 		const destinationAccountIndex = getAccountIndex(destinationUser, +destinationAccountNum);
 
 		// TODO: Validar montos suficientes
-		if (validateSufficientFunds(activeUser, originAccountIndex, +amount)) {
+		if (validateSufficientFunds(originUser, originAccountIndex, +amount)) {
 			// Realiza conversión de moneda
-			const originCurrency = activeUser.accounts[originAccountIndex].currency;
+			const originCurrency = originUser.accounts[originAccountIndex].currency;
 			const destinationCurrency = destinationUser.accounts[destinationAccountIndex].currency;
 			const transformedAmount = applyCurrencyExange(+amount, originCurrency, destinationCurrency);
 
 			// Realiza operación
-			accounts[activeUserIndex].accounts[originAccountIndex].balance -= +amount;
+			accounts[originUserIndex].accounts[originAccountIndex].balance -= +amount;
 			accounts[destinationUserIndex].accounts[destinationAccountIndex].balance += +transformedAmount;
 
 			// Retorna nuevo activeUser info
-			res.status(200).json(accounts[activeUserIndex]);
+			res.status(200).json(accounts[originUserIndex]);
 		} else {
 			res.status(412).send("Insufficient funds to perform operation on origin account");
 		}
