@@ -100,6 +100,42 @@ server.put("/account/operations/internaltransfer", getActiveUser, (req, res) => 
 	}
 });
 
+// ExternalTransference
+server.put("/account/operations/externaltransfer", getActiveUser, (req, res) => {
+	// Agregar middleware VALIDARCUENTAORIGEN/TOKEN
+	const { amount, destinationAccountNum, originAccountNum } = req.body;
+	const { activeUserIndex, activeUser } = res.locals;
+	const destinationAccount = res.locals;
+	const destinationAccountIndex = res.locals;
+
+	// Valida que existan las cuentas
+	// Duplicado con getAccountIndex -> aprovechar validación
+	if (validateEndAccount(destinationAccountNum, activeUser) && validateEndAccount(originAccountNum, activeUser)) {
+		// Obtiene indice de cuentas
+		const destinationAccountIndex = getAccountIndex(activeUser, destinationAccountNum);
+		const originAccountIndex = getAccountIndex(activeUser, originAccountNum);
+
+		// TODO: Validar montos suficientes
+		if (validateSufficientFunds(activeUser, originAccountIndex, +amount)) {
+			// Realiza conversión de moneda
+			const originCurrency = accounts[activeUserIndex].accounts[originAccountIndex].currency;
+			const destinationCurrency = accounts[activeUserIndex].accounts[destinationAccountIndex].currency;
+			const transformedAmount = applyCurrencyExange(+amount, originCurrency, destinationCurrency);
+
+			// Realiza operación
+			accounts[activeUserIndex].accounts[originAccountIndex].balance -= +amount;
+			accounts[activeUserIndex].accounts[destinationAccountIndex].balance += +transformedAmount;
+
+			// Retorna nuevo activeUser info
+			res.status(200).json(accounts[activeUserIndex]);
+		} else {
+			res.status(412).send("Insufficient funds to perform operation on origin account");
+		}
+	} else {
+		res.status(404).send("Account not found");
+	}
+});
+
 // UTILS
 function validateExistingUser(req, res, next) {
 	const { dni } = req.body;
