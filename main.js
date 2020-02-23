@@ -103,37 +103,50 @@ server.put("/account/operations/internaltransfer", getActiveUser, (req, res) => 
 // ExternalTransference
 server.put("/account/operations/externaltransfer", getActiveUser, (req, res) => {
 	// Agregar middleware VALIDARCUENTAORIGEN/TOKEN
+	/* 
+		Obtener cuenta origen
+		Obtener cuenta origen Index
+	Obtener cuenta destino
+	Obtener cuenta destino Index
+	Obtener cuenta origen - cuenta origen $
+	Obtener cuenta destino - cuenta destino $
+	validar montos cuenta origen
+	realizar operación
+	enviar status codes
+	*/
 	const { amount, destinationAccountNum, originAccountNum } = req.body;
 	const { activeUserIndex, activeUser } = res.locals;
-	const destinationAccount = res.locals;
+	const destinationAccount = getAccountFromAccountNumber(+destinationAccountNum);
 	const destinationAccountIndex = res.locals;
+
+	res.json(destinationAccount);
 
 	// Valida que existan las cuentas
 	// Duplicado con getAccountIndex -> aprovechar validación
-	if (validateEndAccount(destinationAccountNum, activeUser) && validateEndAccount(originAccountNum, activeUser)) {
-		// Obtiene indice de cuentas
-		const destinationAccountIndex = getAccountIndex(activeUser, destinationAccountNum);
-		const originAccountIndex = getAccountIndex(activeUser, originAccountNum);
+	// if (validateEndAccount(destinationAccountNum, activeUser) && validateEndAccount(originAccountNum, activeUser)) {
+	// 	// Obtiene indice de cuentas
+	// 	const destinationAccountIndex = getAccountIndex(activeUser, destinationAccountNum);
+	// 	const originAccountIndex = getAccountIndex(activeUser, originAccountNum);
 
-		// TODO: Validar montos suficientes
-		if (validateSufficientFunds(activeUser, originAccountIndex, +amount)) {
-			// Realiza conversión de moneda
-			const originCurrency = accounts[activeUserIndex].accounts[originAccountIndex].currency;
-			const destinationCurrency = accounts[activeUserIndex].accounts[destinationAccountIndex].currency;
-			const transformedAmount = applyCurrencyExange(+amount, originCurrency, destinationCurrency);
+	// 	// TODO: Validar montos suficientes
+	// 	if (validateSufficientFunds(activeUser, originAccountIndex, +amount)) {
+	// 		// Realiza conversión de moneda
+	// 		const originCurrency = accounts[activeUserIndex].accounts[originAccountIndex].currency;
+	// 		const destinationCurrency = accounts[activeUserIndex].accounts[destinationAccountIndex].currency;
+	// 		const transformedAmount = applyCurrencyExange(+amount, originCurrency, destinationCurrency);
 
-			// Realiza operación
-			accounts[activeUserIndex].accounts[originAccountIndex].balance -= +amount;
-			accounts[activeUserIndex].accounts[destinationAccountIndex].balance += +transformedAmount;
+	// 		// Realiza operación
+	// 		accounts[activeUserIndex].accounts[originAccountIndex].balance -= +amount;
+	// 		accounts[activeUserIndex].accounts[destinationAccountIndex].balance += +transformedAmount;
 
-			// Retorna nuevo activeUser info
-			res.status(200).json(accounts[activeUserIndex]);
-		} else {
-			res.status(412).send("Insufficient funds to perform operation on origin account");
-		}
-	} else {
-		res.status(404).send("Account not found");
-	}
+	// 		// Retorna nuevo activeUser info
+	// 		res.status(200).json(accounts[activeUserIndex]);
+	// 	} else {
+	// 		res.status(412).send("Insufficient funds to perform operation on origin account");
+	// 	}
+	// } else {
+	// 	res.status(404).send("Account not found");
+	// }
 });
 
 // UTILS
@@ -210,6 +223,9 @@ function applyCurrencyExange(amount, originCurrency, destinationCurrency) {
 	} else {
 		return amount;
 	}
+}
+function getAccountFromAccountNumber(accountNumber) {
+	return accounts.filter(account => account.accounts.find(acc => acc.accountNumber === accountNumber))[0];
 }
 function getAccountIndex(activeUser, accountNumber) {
 	return activeUser.accounts.indexOf(activeUser.accounts.find(acc => acc.accountNumber === +accountNumber));
