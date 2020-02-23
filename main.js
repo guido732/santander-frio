@@ -4,14 +4,14 @@ const cors = require("cors");
 const server = express();
 
 let userDb = [
-  {
-    dni: "30111000",
-    password: "pedrogato123"
-  },
-  {
-    dni: "20999111",
-    password: "marioperro123"
-  }
+	{
+		dni: "30111000",
+		password: "pedrogato123"
+	},
+	{
+		dni: "20999111",
+		password: "marioperro123"
+	}
 ];
 
 let accounts = [
@@ -35,7 +35,7 @@ let accounts = [
 	},
 	{
 		fullname: "Mario Perro",
-    dni: "20999111",
+		dni: "20999111",
 		accounts: [
 			{
 				accountNumber: 333333,
@@ -67,10 +67,10 @@ server.use(bodyParser.json(), cors());
 // Register new user
 server.post("/v1/users/newuser", validateExistingUser, (req, res) => {
 	// TODO: Corroborar que las variables sean igual que lo que se manda desde el front
-  const { dni, password, fullname } = req.body;
+	const { dni, password, fullname } = req.body;
 	userDb.push({ dni, password });
 	createAccount(dni, fullname);
-  res.status(200).json("User created");
+	res.status(200).json("User created");
 });
 
 //User login
@@ -158,9 +158,9 @@ function validateExistingUser(req, res, next) {
 	if (!existingUser) {
 		next();
 	} else {
-    res
-      .status(409)
-    res.status(409).json("User already exists");
+		res.status(409).json("User already exists");
+	}
+}
 function findUser(userDni, res) {
 	const foundUser = userDb.find(user => +user.dni === +userDni);
 	if (foundUser) {
@@ -246,7 +246,7 @@ function getAccountIndex(activeUser, accountNumber) {
 
 // ERROR DETECTION
 server.use((err, req, res, next) => {
-	if (!err) return next();
-	console.log("An error has occurred", err);
-	res.status(500).send("Error");
+	!err ? next() : null;
+	console.log("Error, algo salio mal", err);
+	res.status(500).send("error");
 });
