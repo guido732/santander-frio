@@ -97,7 +97,7 @@ server.put("/account/operations/internaltransfer", getActiveUser, validateAmount
 });
 
 // ExternalTransference
-server.put("/account/operations/externaltransfer", getActiveUser, (req, res) => {
+server.put("/account/operations/externaltransfer", getActiveUser, validateAmount, (req, res) => {
 	// Agregar middleware VALIDARCUENTAORIGEN/TOKEN
 	const { amount, destinationAccountNum, originAccountNum } = req.body;
 	const { activeUserIndex, activeUser } = res.locals;
@@ -216,10 +216,6 @@ function getAccountFromAccountNumber(accountNumber) {
 }
 function getAccountIndex(activeUser, accountNumber) {
 	return activeUser.accounts.indexOf(activeUser.accounts.find(acc => acc.accountNumber === accountNumber));
-}
-function validateEndAccount(inputAccount, activeUser) {
-	const accountFound = activeUser.accounts.filter(account => account.accountNumber === +inputAccount);
-	return !!accountFound.length;
 }
 
 // ERROR DETECTION
