@@ -1,0 +1,24 @@
+{
+	"semi": true,
+	"trailingComma": "all",
+	"singleQuote": false,
+	"printWidth": 90,
+	"useTabs": true,
+	"tabWidth": 2,
+	"overrides": [
+		{
+			"files": ["package.json", "*.yml", ".prettierrc"],
+			"options": {
+				"useTabs": true,
+				"tabWidth": 2
+			}
+		},
+		{
+			"files": ["*.js", "*.jsx", "*.ts", "*.tsx"],
+			"options": {
+				"useTabs": true,
+				"tabWidth": 2
+			}
+		}
+	]
+}
