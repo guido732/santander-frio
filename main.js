@@ -104,11 +104,16 @@ server.put("/account/operations/externaltransfer", getActiveUser, validateAmount
 	// Obtiene datos del body + cuenta origen e Index de cuenta origen desde el res.locals
 	const { amount, destinationAccountNum, originAccountNum } = req.body;
 	const { activeUserIndex: originUserIndex, activeUser: originUser } = res.locals;
-
+	// Obtiene datos de la cuenta destino
 	const destinationUser = getAccountFromAccountNumber(+destinationAccountNum);
 	const destinationUserIndex = accounts.indexOf(destinationUser);
 	// Valida que existan las cuentas
-	if (originUser && destinationUser) {
+	console.log(originUser, destinationUser);
+	if (
+		originUser &&
+		destinationUser &&
+		validateExistingAccounts(originUser, +originAccountNum, destinationUser, +destinationAccountNum)
+	) {
 		// Obtiene indice de cuentas
 		const originAccountIndex = getAccountIndex(originUser, +originAccountNum);
 		const destinationAccountIndex = getAccountIndex(destinationUser, +destinationAccountNum);
@@ -130,7 +135,7 @@ server.put("/account/operations/externaltransfer", getActiveUser, validateAmount
 			res.status(412).send("Insufficient funds to perform operation on origin account");
 		}
 	} else {
-		res.status(404).send("Account not found");
+		res.status(404).send("Account(s) not found");
 	}
 });
 
@@ -208,8 +213,6 @@ function validateExistingAccounts(originUser, originAccountNum, destinationUser,
 	const destinationAccountValidation = destinationUser.accounts.filter(
 		acc => acc.accountNumber === destinationAccountNum
 	);
-	console.log(!!originAccountValidation.length, !!destinationAccountValidation.length);
-
 	return !!originAccountValidation.length && !!destinationAccountValidation.length;
 }
 function validateSufficientFunds(activeUser, originAccountIndex, amount) {
