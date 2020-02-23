@@ -70,7 +70,7 @@ server.post("/login", userLogin, (req, res) => {
 // InternalTransference
 // Validación de cuentas internas (que existan)
 // Validación de monto (no números negativos)
-server.put("/account/operations/internaltransfer", getActiveUser, (req, res) => {
+server.put("/account/operations/internaltransfer", getActiveUser, validateAmount, (req, res) => {
 	// Agregar middleware VALIDARCUENTAORIGEN/TOKEN
 	const { amount, destinationAccountNum, originAccountNum } = req.body;
 	const { activeUserIndex, activeUser } = res.locals;
@@ -196,6 +196,10 @@ function getActiveUser(req, res, next) {
 	} else {
 		res.status(404).send("Account not found");
 	}
+}
+function validateAmount(req, res, next) {
+	const { amount } = req.body;
+	return amount > 0 ? next() : res.status(400).send("Invalid amount of transference");
 }
 function validateSufficientFunds(activeUser, originAccountIndex, amount) {
 	return activeUser.accounts[originAccountIndex].balance - amount >= 0 ? true : false;
