@@ -128,9 +128,13 @@ function validateExistingUser(req, res, next) {
     res
       .status(409)
 <<<<<<< HEAD
+<<<<<<< HEAD
     res.status(409).json("User already exists");
 =======
       .send("Ups! Ese Usuario ya existe. Por favor iniciá sesión."); //TODO: mostrar mensaje en el front
+=======
+      .json("Ups! Ese Usuario ya existe. Por favor iniciá sesión."); //TODO: mostrar mensaje en el front
+>>>>>>> Fixing response format when user already exists
 	}
 }
 >>>>>>> Adding DB. Minor fixings. Setting res and status.
