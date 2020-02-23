@@ -81,6 +81,13 @@ server.post("/v1/users/login", userLogin, (req, res) => {
   res.status(200).json(userData);
 });
 
+// User's accounts current status
+server.get("/v1/users/accounts", (req, res) => {
+  const { dni } = req.body;
+  const userData = findUserData(dni);
+  res.status(200).json(userData);
+}); // El caso de error se maneja por el general, ya que este GET se hace una vez logueado el
+//Usuario por lo que el DNI ya esta previamente validado por los otros metodos.
 // InternalTransference
 server.put("/account/operations/internaltransfer", getActiveUser, (req, res) => {
 	// Agregar middleware VALIDARCUENTAORIGEN/TOKEN
