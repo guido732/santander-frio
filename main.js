@@ -76,9 +76,9 @@ server.post("/v1/users/newuser", validateExistingUser, (req, res) => {
 });
 
 //User login
-server.post("/login", userLogin, (req, res) => {
-	// TODO: Corroborar que las variables sean igual que lo que se manda desde el front
-	res.status(200).json(activeUser);
+server.post("/v1/users/login", userLogin, (req, res) => {
+  const { userData } = req;
+  res.status(200).json(userData);
 });
 
 // InternalTransference
@@ -141,13 +141,19 @@ function findUserData(userDni) {
 function userLogin(req, res, next) {
 	const { dni, password } = req.body;
 	const existingUser = findUser(dni);
+  if (existingUser) {
 	const userPassword = existingUser.password;
 	if (password === userPassword) {
 		const userData = findUserData(dni);
-		activeUser = userData;
+      req.userData = userData;
 		next();
 	} else {
-		res.status(500).send("Contraseña Incorrecta. Intente nuevamente");
+      res.status(401).send("Esa no es la contraseña... Intentá nuevamente."); // TODO: mostrar en el front
+    }
+  } else {
+    res.status(404).send(
+      "Ese Usuario no existe! Intenta nuevamente o registrate para acceeder al servicio." //TODO: mostrar en el front
+    );
 	}
 }
 function createAccount(dni, fullname) {
