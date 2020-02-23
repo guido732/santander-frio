@@ -123,7 +123,7 @@ function validateExistingUser(req, res, next) {
 	} else {
     res
       .status(409)
-      .send("Ups! Ese Usuario ya existe. Por favor iniciá sesión."); //TODO: mostrar mensaje en el front
+      .json("Ups! Ese Usuario ya existe. Por favor iniciá sesión."); //TODO: mostrar mensaje en el front
 	}
 }
 function findUser(userDni, res) {
