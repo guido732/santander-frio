@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const server = express();
+const path = require("path");
 
 let userDb = [
   {
@@ -58,31 +59,25 @@ const currencyExange = {
   US$: 63.5
 };
 
+server.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname + "/index.html"));
+});
+
 server.listen(3000, () => {
   console.log("Server started");
 });
 
 server.use(bodyParser.json(), cors());
+server.use("/styles", express.static("styles"));
+server.use("/scripts", express.static("scripts"));
 
 // Register new user
 server.post("/v1/users/newuser", validateExistingUser, (req, res) => {
   // TODO: Corroborar que las variables sean igual que lo que se manda desde el front
   const { dni, password, fullname } = req.body;
-<<<<<<< HEAD
-	userDb.push({ dni, password });
-	createAccount(dni, fullname);
-<<<<<<< HEAD
-  res.status(200).json("User created");
-=======
-  res.status(200).json(
-    "Genial! Te registraste correctamente. Ya podes a empezar a utilizar el servicio." //TODO: deberiamos tomar este msj y mostrarlo en un modal
-  );
->>>>>>> Adding DB. Minor fixings. Setting res and status.
-=======
   userDb.push({ dni, password });
   createAccount(dni, fullname);
   res.status(200).json("User created");
->>>>>>> fix conflicts
 });
 
 //User login
@@ -148,24 +143,6 @@ server.put(
 
 // UTILS
 function validateExistingUser(req, res, next) {
-<<<<<<< HEAD
-	const { dni } = req.body;
-	const existingUser = findUser(dni, res);
-	if (!existingUser) {
-		next();
-	} else {
-    res
-      .status(409)
-<<<<<<< HEAD
-<<<<<<< HEAD
-    res.status(409).json("User already exists");
-=======
-      .send("Ups! Ese Usuario ya existe. Por favor iniciá sesión."); //TODO: mostrar mensaje en el front
-=======
-      .json("Ups! Ese Usuario ya existe. Por favor iniciá sesión."); //TODO: mostrar mensaje en el front
->>>>>>> Fixing response format when user already exists
-	}
-=======
   const { dni } = req.body;
   const existingUser = findUser(dni, res);
   if (!existingUser) {
@@ -173,9 +150,7 @@ function validateExistingUser(req, res, next) {
   } else {
     res.status(409).json("User already exists");
   }
->>>>>>> fix conflicts
 }
->>>>>>> Adding DB. Minor fixings. Setting res and status.
 function findUser(userDni, res) {
   const foundUser = userDb.find(user => +user.dni === +userDni);
   if (foundUser) {
