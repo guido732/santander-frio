@@ -1,165 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Homebanking - Santanderfrio</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./styles/style.css" />
+  </head>
 
-</head>
-
-<body>
-
+  <body>
     <header>
-        <span class="logo">Santanderfrío</span>
-        <a class="logout" href="/index.html">Cerrar sesión</a>
+      <span class="logo">Santanderfrío</span>
+      <a class="logout" href="/index.html">Cerrar sesión</a>
     </header>
 
     <div class="container-homebanking">
-
-        <div class="container-left">
-
-            <div class="box">
-                <div class="user-data">
-                    <div class='user-image'>
-                    </div>
-                    <div class="greeting">
-                        <span>Bienvenido, <br> <span id="name"></span>.</span>
-                    </div>
-                </div>
-                <h5 class="center">Tus cuentas</h5>
-                <div class="wallet">
-                    <div class="ars">
-                        <span class="currency">$ </span><span id="cuentaCorriente"></span>
-                    </div>
-                    <div class="usd">
-                        <span class="currency">u$s </span><span id="cajaAhorro"></span>
-                    </div>
-                </div>
+      <div class="container-left">
+        <div class="box">
+          <div class="user-data">
+            <div class="user-image"></div>
+            <div class="greeting">
+              <span
+                >Bienvenido, <br />
+                <span id="name"></span>.</span
+              >
             </div>
-
-        </div>
-
-        <div class="container-middle">
-
-            <div class="box">
-                <button type="button" class="btn btn-ingresar" id="ingresar">Ingresar dinero</button>
-                <button type="button" class="btn btn-transferir" id="transferir">Transferir dinero</button>
-                <button type="button" class="btn btn-exchange" id="comprar">Comprar u$s</button>
+          </div>
+          <h5 class="center">Tus cuentas</h5>
+          <div class="wallet">
+            <div class="ars">
+              <span class="currency">$ </span><span id="cuentaCorriente"></span>
             </div>
-        </div>
-
-        <div class="container-right">
-
-            <div class="box">
-                <span>Cargar celu</span>
-                <span>Cargar SUBE</span>
-                <span class="double">Pagar Servicios</span>
+            <div class="usd">
+              <span class="currency">u$s </span><span id="cajaAhorro"></span>
             </div>
-
+          </div>
         </div>
+      </div>
 
+      <div class="container-middle">
+        <div class="box">
+          <button type="button" class="btn btn-ingresar" id="ingresar">
+            Ingresar dinero
+          </button>
+          <button type="button" class="btn btn-transferir" id="transferir">
+            Transferir dinero
+          </button>
+          <button type="button" class="btn btn-exchange" id="comprar">
+            Comprar u$s
+          </button>
+        </div>
+      </div>
+
+      <div class="container-right">
+        <div class="box">
+          <span>Cargar celu</span>
+          <span>Cargar SUBE</span>
+          <span class="double">Pagar Servicios</span>
+        </div>
+      </div>
     </div>
 
     <div class="ingresar-modal">
+      <h4>Transferencia interna</h4>
+      <span id="close-ingresar">X</span>
 
-        <h4>Transferencia interna</h4><span id="close-ingresar">X</span>
+      <h5>Desde</h5>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputCuentaOrigen">Cuenta</label>
+        </div>
+        <select class="custom-select" id="inputCuentaOrigen">
+          <option selected>Elegí cuenta origen</option>
+          <option value="111111">Caja de ahorros</option>
+          <option value="222222">Cuenta corriente</option>
+        </select>
+      </div>
 
-        <h5>Desde</h5>
+      <form>
         <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <label class="input-group-text" for="inputCuentaOrigen">Cuenta</label>
-            </div>
-            <select class="custom-select" id="inputCuentaOrigen">
-                <option selected>Elegí cuenta origen</option>
-                <option value="111111">Caja de ahorros</option>
-                <option value="222222">Cuenta corriente</option>
-            </select>
+          <div class="input-group-prepend">
+            <span class="input-group-text">$</span>
+          </div>
+          <input type="number" id="ingresaAmount" class="form-control" />
+          <div class="input-group-append">
+            <span class="input-group-text">.00</span>
+          </div>
         </div>
 
-        <form>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">$</span>
-                </div>
-                <input type="number" id="ingresaAmount" class="form-control">
-                <div class="input-group-append">
-                    <span class="input-group-text">.00</span>
-                </div>
-            </div>
+        <h5>Hacia</h5>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="inputCuentaDestino"
+              >Cuenta</label
+            >
+          </div>
+          <select class="custom-select" id="inputCuentaDestino">
+            <option selected>Elegí cuenta destino</option>
+            <option value="111111">Caja de ahorros</option>
+            <option value="222222">Cuenta corriente</option>
+          </select>
+        </div>
 
-            <h5>Hacia</h5>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputCuentaDestino">Cuenta</label>
-                </div>
-                <select class="custom-select" id="inputCuentaDestino">
-                    <option selected>Elegí cuenta destino</option>
-                    <option value="111111">Caja de ahorros</option>
-                    <option value="222222">Cuenta corriente</option>
-                </select>
-            </div>
-
-            <button type="submit" id="btn-transfInterna" class="btn btn-dark">Ingresar dinero</button>
-        </form>
+        <button type="submit" id="btn-transfInterna" class="btn btn-dark">
+          Ingresar dinero
+        </button>
+      </form>
     </div>
 
     <div class="transferir-modal">
+      <h4>Transferir dinero a terceros</h4>
+      <span id="close-transferir">X</span>
+      <form>
+        <h5>Desde</h5>
 
-        <h4>Transferir dinero a terceros</h4><span id="close-transferir">X</span>
-        <form>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="inputCuentaSelectTransf"
+              >Cuenta</label
+            >
+          </div>
+          <select class="custom-select" id="inputCuentaSelectTransf">
+            <option selected>Elegír cuenta</option>
+            <option value="111111">Caja de ahorros</option>
+            <option value="222222">Cuenta corriente</option>
+          </select>
+        </div>
 
-            <h5>Desde</h5>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">$</span>
+          </div>
+          <input type="number" class="form-control" id="transfiereAmount" />
+          <div class="input-group-append">
+            <span class="input-group-text">.00</span>
+          </div>
+        </div>
 
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputCuentaSelectTransf">Cuenta</label>
-                </div>
-                <select class="custom-select" id="inputCuentaSelectTransf">
-                    <option selected>Elegír cuenta</option>
-                    <option value="111111">Caja de ahorros</option>
-                    <option value="222222">Cuenta corriente</option>
-                </select>
-            </div>
+        <h5>Hacia</h5>
 
+        <div class="form-group">
+          <label for="dni">DNI destino</label>
+          <input
+            type="number"
+            class="form-control"
+            id="dni"
+            placeholder="Ingresá el DNI destino"
+          />
+        </div>
 
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">$</span>
-                </div>
-                <input type="number" class="form-control" id="transfiereAmount">
-                <div class="input-group-append">
-                    <span class="input-group-text">.00</span>
-                </div>
-            </div>
-
-            <h5>Hacia</h5>
-
-            <div class="form-group">
-                <label for="dni">DNI destino</label>
-                <input type="number" class="form-control" id="dni" placeholder="Ingresá el DNI destino">
-            </div>
-
-            <button type="submit" class="btn btn-dark">Transferir dinero</button>
-        </form>
+        <button type="submit" class="btn btn-dark">Transferir dinero</button>
+      </form>
     </div>
 
     <footer>Hecho con mucho amor por Alexis, Guido e Iván.</footer>
 
-
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
-    <script src="./home.js"></script>
-</body>
-
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./scripts/home.js"></script>
+  </body>
 </html>

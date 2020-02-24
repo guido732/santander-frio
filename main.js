@@ -54,6 +54,8 @@ let accounts = [
   }
 ];
 
+let isAuth = false;
+
 const currencyExange = {
   $: 58.5,
   US$: 63.5
@@ -61,6 +63,10 @@ const currencyExange = {
 
 server.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "/index.html"));
+});
+
+server.get("/home", validateAuth, (req, res) => {
+  res.sendFile(path.join(__dirname + "/home.html"));
 });
 
 server.listen(3000, () => {
@@ -83,6 +89,7 @@ server.post("/v1/users/newuser", validateExistingUser, (req, res) => {
 //User login
 server.post("/v1/users/login", userLogin, (req, res) => {
   const { userData } = req;
+  isAuth = true;
   res.status(200).json(userData);
 });
 
@@ -142,6 +149,14 @@ server.put(
 );
 
 // UTILS
+
+function validateAuth(req, res, next) {
+  if (isAuth) {
+    next();
+  } else {
+    res.status(403).send("403 - Forbidden");
+  }
+}
 function validateExistingUser(req, res, next) {
   const { dni } = req.body;
   const existingUser = findUser(dni, res);
@@ -173,14 +188,13 @@ function userLogin(req, res, next) {
       req.userData = userData;
       next();
     } else {
-      res.status(401).json("Esa no es la contraseña... Intentá nuevamente."); // TODO: mostrar en el front
+      res.status(401).json("Wrong password");
     }
   } else {
-    res.status(404).json(
-      "Ese Usuario no existe! Intenta nuevamente o registrate para acceeder al servicio." //TODO: mostrar en el front
-    );
+    res.status(404).json("User does not exists");
   }
 }
+
 function createAccount(dni, fullname) {
   const newAccount = {
     fullname: fullname,

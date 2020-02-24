@@ -30,7 +30,7 @@
             <input
               type="email"
               class="form-control"
-              id="dni"
+              id="userdni"
               placeholder="Tu número de documento"
               autocomplete="off"
             />
@@ -39,11 +39,13 @@
             <input
               type="password"
               class="form-control"
-              id="clave"
+              id="password"
               placeholder="Tu clave"
             />
           </div>
-          <button type="submit" class="btn btn-login">Ingresar</button>
+          <button type="button" class="btn btn-login" onclick="doLogin()">
+            Ingresar
+          </button>
         </form>
 
         <div class="register">
@@ -68,5 +70,6 @@
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
       crossorigin="anonymous"
     ></script>
+    <script src="./scripts/loginFetch.js"></script>
   </body>
 </html>
