@@ -194,27 +194,8 @@ h4 {
   }
 }
 
-.ingresar-modal,
-.transferir-modal {
-  border: 2px solid pink;
-  background: lightpink;
-  padding: 20px;
-  width: 30%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: translate(100%, 50%);
-  display: none;
-  box-shadow: 0px 9px 37px -5px rgba(138, 138, 138, 1);
-}
-
 h4 {
   display: inline-block;
-}
-
-#close-ingresar,
-#close-transferir {
-  float: right;
 }
 
 .logout {
