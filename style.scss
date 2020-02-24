@@ -91,11 +91,11 @@ h4 {
   }
 }
 
-.logo{
-    font-family: Signika;
-    font-size: 24px;
-    color: rgb(212, 0, 0);
-    text-shadow: 2px 1px 2px rgba(150, 150, 150, 0.55);
+.logo {
+  font-family: Signika;
+  font-size: 24px;
+  color: rgb(212, 0, 0);
+  text-shadow: 2px 1px 2px rgba(150, 150, 150, 0.55);
 }
 
 .center {
@@ -129,11 +129,11 @@ h4 {
           width: 100px;
         }
       }
-      .greeting{
-          font-size: 24px;
-          display: flex;
-          align-items: center;
-          padding-left: 20px;
+      .greeting {
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        padding-left: 20px;
       }
     }
     .wallet {
@@ -149,9 +149,8 @@ h4 {
         padding: 10px;
         margin: 10px;
       }
-      .currency{
-
-          font-weight: bolder;
+      .currency {
+        font-weight: bolder;
       }
     }
   }
@@ -229,9 +228,43 @@ h4 {
   padding: 15px 40px;
 }
 
-footer{
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    padding: 20px;
+footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 20px;
+}
+
+
+.modal-dialog.reg{
+  max-width: 300px;
+  h4 {
+    margin: 0;
+    padding: 0;
+  }
+  .modal-header {
+    border-bottom: unset;
+  }
+  .modal-body {
+    form {
+      input {
+        border: unset;
+        border-radius: unset;
+        border-bottom: 1px solid;
+        padding: 6px 0;
+        &:focus {
+          box-shadow: unset;
+          border-color: rgb(212, 0, 0);
+        }
+      }
+    }
+  }
+  .modal-footer{
+    border: unset;
+    padding: 0 16px 16px 16px;
+    button{
+      display: block;
+      width: 100%;
+    }
+  }
 }

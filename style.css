@@ -297,4 +297,40 @@ footer {
   right: 0;
   padding: 20px;
 }
+
+.modal-dialog.reg {
+  max-width: 300px;
+}
+
+.modal-dialog.reg h4 {
+  margin: 0;
+  padding: 0;
+}
+
+.modal-dialog.reg .modal-header {
+  border-bottom: unset;
+}
+
+.modal-dialog.reg .modal-body form input {
+  border: unset;
+  border-radius: unset;
+  border-bottom: 1px solid;
+  padding: 6px 0;
+}
+
+.modal-dialog.reg .modal-body form input:focus {
+  -webkit-box-shadow: unset;
+          box-shadow: unset;
+  border-color: #d40000;
+}
+
+.modal-dialog.reg .modal-footer {
+  border: unset;
+  padding: 0 16px 16px 16px;
+}
+
+.modal-dialog.reg .modal-footer button {
+  display: block;
+  width: 100%;
+}
 /*# sourceMappingURL=style.css.map */
