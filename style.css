@@ -254,29 +254,8 @@ h4 {
   grid-column: 1 / span 2;
 }
 
-.ingresar-modal,
-.transferir-modal {
-  border: 2px solid pink;
-  background: lightpink;
-  padding: 20px;
-  width: 30%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  -webkit-transform: translate(100%, 50%);
-          transform: translate(100%, 50%);
-  display: none;
-  -webkit-box-shadow: 0px 9px 37px -5px #8a8a8a;
-          box-shadow: 0px 9px 37px -5px #8a8a8a;
-}
-
 h4 {
   display: inline-block;
-}
-
-#close-ingresar,
-#close-transferir {
-  float: right;
 }
 
 .logout {
@@ -296,5 +275,41 @@ footer {
   bottom: 0;
   right: 0;
   padding: 20px;
+}
+
+.modal-dialog.reg {
+  max-width: 300px;
+}
+
+.modal-dialog.reg h4 {
+  margin: 0;
+  padding: 0;
+}
+
+.modal-dialog.reg .modal-header {
+  border-bottom: unset;
+}
+
+.modal-dialog.reg .modal-body form input {
+  border: unset;
+  border-radius: unset;
+  border-bottom: 1px solid;
+  padding: 6px 0;
+}
+
+.modal-dialog.reg .modal-body form input:focus {
+  -webkit-box-shadow: unset;
+          box-shadow: unset;
+  border-color: #d40000;
+}
+
+.modal-dialog.reg .modal-footer {
+  border: unset;
+  padding: 0 16px 16px 16px;
+}
+
+.modal-dialog.reg .modal-footer button {
+  display: block;
+  width: 100%;
 }
 /*# sourceMappingURL=style.css.map */
