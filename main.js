@@ -144,6 +144,7 @@ server.put(
 	"/v1/accounts/operations/internaltransfer",
 	getActiveUser,
 	validateAmount,
+	getCurrencyExange,
 	(req, res) => {
 		// Agregar middleware VALIDARCUENTAORIGEN/TOKEN
 		const { amount, originAccountNum, destinationAccountNum } = req.body;
@@ -192,6 +193,7 @@ server.put(
 	"/v1/accounts/operations/externaltransfer",
 	getActiveUser,
 	validateAmount,
+	getCurrencyExange,
 	(req, res) => {
 		// Agregar middleware VALIDARCUENTAORIGEN/TOKEN
 		// Obtiene datos del body + cuenta origen e Index de cuenta origen desde el res.locals
@@ -246,6 +248,10 @@ server.put(
 		}
 	},
 );
+
+server.get("/v1/accounts/operations/getexangerate", getCurrencyExange, (req, res) => {
+	res.status(200).json(currencyExange);
+});
 
 // UTILS
 
@@ -380,7 +386,7 @@ function validateEndAccount(inputAccount, activeUser) {
 	);
 	return !!accountFound.length;
 }
-async function getCurrencyExange() {
+async function getCurrencyExange(req, res, next) {
 	let d = new Date();
 	let dateParam = String(d.getFullYear()) + "-" + String(d.getMonth() + 1);
 	let url = `https://apis.datos.gob.ar/series/api/series/?ids=168.1_T_CAMBIOR_D_0_0_26&start_date=${dateParam}&limit=1`;
@@ -391,9 +397,11 @@ async function getCurrencyExange() {
 		currencyExange.US$ = currentRate;
 		currencyExange.$ = currentRate;
 		currencyExange.lastUpdated = new Date();
-		res.status(200).json(currencyExange);
+		console.log(currencyExange);
+
+		next();
 	} catch (error) {
-		res.status(304).json(currencyExange);
+		next();
 	}
 }
 
