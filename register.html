@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Santanderfrio</title>
+    <title>Registro - Santanderfrio</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
@@ -14,28 +14,29 @@
 <body>
 
     <div class="container">
-        <div class="greeting">
-            <div class="greeting__header">Santanderfrio</div>
-            <h1>Hola :)<br> Bienvenido a <br> Online Banking</h1>
-        </div>
-        <div class="login">
+            <h1>Registro</h1>
+
             <form>
-                <h3>Ingresá desde acá para operar</h3>
                 <div class="form-group">
-                  <input type="email" class="form-control" id="dni" placeholder="Tu número de documento" autocomplete="off">
+                    <label for="name">Nombre y Apellido</label>
+                    <input type="text" class="form-control" id="name">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="dni">DNI</label>
+                    <input type="number" class="form-control" id="dni">
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control" id="clave" placeholder="Tu clave">
+                    <label for="clave">Clave</label>
+                    <input type="password" class="form-control" id="clave">
                 </div>
-                <button type="submit" class="btn btn-login">Ingresar</button>
-              </form>
-
-
-            <div class="register">
-                <h4>¿No tenes cuenta?</h4>
-                <button class="btn btn-register">Registrate</button>
-            </div>
-        </div>
+                <button type="submit" class="btn btn-primary">Comenzar a operar</button>
+            </form>
     </div>
 
 
