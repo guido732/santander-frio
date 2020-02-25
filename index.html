@@ -1,96 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Santanderfrio</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="/styles/style.css">
-
-</head>
-
-<body>
-
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/styles/style.css" />
+  </head>
+  <body>
     <div class="container">
-        <div class="greeting">
-            <div class="greeting__header">Santanderfrio</div>
-            <h1>Hola :)<br> Bienvenido a <br> Online Banking</h1>
+      <div class="greeting">
+        <div class="greeting__header">Santanderfrio</div>
+        <h1>
+          Hola :)<br />
+          Bienvenido a <br />
+          Online Banking
+        </h1>
+      </div>
+      <div class="login">
+        <form>
+          <h3>Ingresá desde acá para operar</h3>
+          <div class="form-group">
+            <input
+              type="number"
+              class="form-control"
+              id="userdni"
+              placeholder="Tu número de documento"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              placeholder="Tu clave"
+            />
+          </div>
+          <button type="button" class="btn btn-login" id="loginAction">
+            Ingresar
+          </button>
+        </form>
+        <div class="register">
+          <h4>¿No tenes cuenta?</h4>
+          <button
+            type="button"
+            class="btn btn-register"
+            data-toggle="modal"
+            data-target="#registerModal"
+          >
+            Registrate
+          </button>
         </div>
-        <div class="login">
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="registerModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog reg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4>Registrate para comenzar a operar</h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
             <form>
-                <h3>Ingresá desde acá para operar</h3>
-                <div class="form-group">
-                    <input type="number" class="form-control" id="userdni" placeholder="Tu número de documento"
-                        autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" id="password" placeholder="Tu clave">
-                </div>
-                <button type="button" class="btn btn-login" id="loginAction">Ingresar</button>
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  placeholder="Tu nombre y apellido"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  placeholder="Tu email"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="dni"
+                  placeholder="Tu número de documento"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="clave"
+                  placeholder="Tu clave"
+                />
+              </div>
             </form>
-
-
-            <div class="register">
-                <h4>¿No tenes cuenta?</h4>
-                <button type="button" class="btn btn-register" data-toggle="modal"
-                    data-target="#registerModal">Registrate</button>
-            </div>
+          </div>
+          <div class="modal-footer">
+            <span id="messageLabel"></span>
+            <button type="button" class="btn btn-primary" id="registerAction">
+              Registrar
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Volver
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-
-    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog reg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                        <h4>Registrate para comenzar a operar</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="name" placeholder="Tu nombre y apellido"
-                                autocomplete="off">
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control" id="email" placeholder="Tu email"
-                                autocomplete="off">
-                        </div>
-                        <div class="form-group">
-                            <input type="number" class="form-control" id="dni" placeholder="Tu número de documento"
-                                autocomplete="off">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="clave" placeholder="Tu clave">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <span id="messageLabel"></span>
-                    <button type="button" class="btn btn-primary" id="registerAction">Registrar</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <footer>Hecho con mucho amor por Alexis, Guido e Iván.</footer>
-
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
     <script src="./scripts/loginFetch.js"></script>
     <script src="./scripts/registerFetch.js"></script>
-</body>
-
+  </body>
 </html>

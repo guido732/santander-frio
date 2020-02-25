@@ -7,11 +7,13 @@ const path = require("path");
 let userDb = [
   {
     dni: "30111000",
-    password: "pedrogato123"
+    password: "pedrogato123",
+    isAuth: false
   },
   {
     dni: "20999111",
-    password: "marioperro123"
+    password: "marioperro123",
+    isAuth: false
   }
 ];
 
@@ -54,8 +56,6 @@ let accounts = [
   }
 ];
 
-let isAuth = true;
-
 const currencyExange = {
   $: 58.5,
   US$: 63.5
@@ -94,12 +94,47 @@ server.post("/v1/users/login", userLogin, (req, res) => {
 });
 
 // Deposit money
-server.put("/v1/accounts/operations/depositMoney", (req,res) =>{
-    const {amount,activeUser} = req.body;
-    activeUser.accounts[0].balance += +amount;
-    res.status(200).json(activeUser);
+server.put(
+  "/v1/accounts/operations/depositMoney",
+  getActiveUser,
+  (req, res) => {
+    const { amount, destinationAccountNum } = req.body;
+    const { activeUserIndex, activeUser } = res.locals;
+    //Valida cuenta de deposito
+    if (validateEndAccount(destinationAccountNum, activeUser)) {
+      // Obtiene indice de cuentas
+      const destinationAccountIndex = getAccountIndex(
+        activeUser,
+        destinationAccountNum
+      );
+      //realiza la operacion
+      accounts[activeUserIndex].accounts[
+        destinationAccountIndex
+      ].balance += +amount;
+
+      //retorna nuevo userActivce info
+      res.status(200).json(accounts[activeUserIndex]);
+    } else {
+      res.status(404).send("Account not found");
+    }
   }
 );
+
+// User's accounts current status
+server.get("/v1/users/accounts", (req, res) => {
+  const { dni } = req.body;
+  const userData = findUserData(dni);
+  res.status(200).json(userData);
+}); // El caso de error se maneja por el general, ya que este GET se hace una vez logueado el
+//Usuario por lo que el DNI ya esta previamente validado por los otros metodos.
+
+//User logout
+server.post("/v1/users/logout", (req, res) => {
+  const { dni } = req.body;
+  const user = findUser(dni);
+  user.isAuth = false;
+  res.status(200).json(null);
+});
 
 // InternalTransference
 server.put(
@@ -159,7 +194,9 @@ server.put(
 // UTILS
 
 function validateAuth(req, res, next) {
-  if (isAuth) {
+  const { dni } = req.body;
+  const user = findUser(dni);
+  if (user.isAuth) {
     next();
   } else {
     res.status(403).send("403 - Forbidden");
@@ -193,6 +230,7 @@ function userLogin(req, res, next) {
     const userPassword = existingUser.password;
     if (password === userPassword) {
       const userData = findUserData(dni);
+      existingUser.isAuth = true;
       req.userData = userData;
       next();
     } else {
@@ -212,6 +250,13 @@ function createAccount(dni, fullname) {
         accountNumber: generateNewAccountNumber,
         accountType: "CA",
         currency: "$",
+        balance: 0,
+        extractionLimit: 1000
+      },
+      {
+        accountNumber: generateNewAccountNumber,
+        accountType: "CA",
+        currency: "US$",
         balance: 0,
         extractionLimit: 1000
       }
