@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const server = express();
-const path = require("path");
 const axios = require("axios");
 
 let userDb = [
@@ -63,21 +62,11 @@ const currencyExange = {
 	lastUpdated: "",
 };
 
-server.get("/", (req, res) => {
-	res.sendFile(path.join(__dirname + "/index.html"));
-});
-
-server.get("/home", validateAuth, (req, res) => {
-	res.sendFile(path.join(__dirname + "/home.html"));
-});
-
 server.listen(3000, () => {
 	console.log("Server started");
 });
 
 server.use(bodyParser.json(), cors());
-server.use("/styles", express.static("styles"));
-server.use("/scripts", express.static("scripts"));
 
 // Register new user
 server.post("/v1/users/newuser", validateExistingUser, (req, res) => {
