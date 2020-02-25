@@ -7,7 +7,7 @@
     <title>Santanderfrio</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/styles/style.css">
 
 </head>
 
@@ -22,13 +22,13 @@
             <form>
                 <h3>Ingresá desde acá para operar</h3>
                 <div class="form-group">
-                    <input type="number" class="form-control" id="dni" placeholder="Tu número de documento"
+                    <input type="number" class="form-control" id="userdni" placeholder="Tu número de documento"
                         autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" id="clave" placeholder="Tu clave">
+                    <input type="password" class="form-control" id="password" placeholder="Tu clave">
                 </div>
-                <button type="submit" class="btn btn-login">Ingresar</button>
+                <button type="button" class="btn btn-login" onclick="doLogin()">Ingresar</button>
             </form>
 
 
@@ -88,6 +88,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+    <script src="./scripts/loginFetch.js"></script>
 </body>
 
 </html>
