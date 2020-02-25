@@ -1,10 +1,3 @@
-const ingresarModal = document.querySelector('.ingresar-modal');
-const transferirModal = document.querySelector('.transferir-modal');
-
-const ingresar = document.getElementById('ingresar');
-const transferir = document.getElementById('transferir');
-const closeIngresar = document.getElementById('close-ingresar');
-const closeTransferir = document.getElementById('close-transferir');
 
 // Dabatase
 
@@ -75,13 +68,9 @@ document.getElementById("name").innerHTML = name;
 
 const ingresaDinero = (event) => {
     event.preventDefault();
-    let cuentaOrigen = Number(document.getElementById("inputCuentaOrigen").value);
-    let cuentaDestino = Number(document.getElementById("inputCuentaDestino").value);
     let amount = document.getElementById("ingresaAmount").value;
 
     let bodyPut = {
-        origen : cuentaOrigen,
-        destino : cuentaDestino,
         amount: amount
     }
 
@@ -97,22 +86,4 @@ const ingresaDinero = (event) => {
 };
 
 document.getElementById("btn-transfInterna").addEventListener('click', ingresaDinero);
-
-// Eventos
-
-ingresar.addEventListener('click', (e) => {
-    ingresarModal.style.display = "block";
-});
-
-transferir.addEventListener('click', (e) => {
-    transferirModal.style.display = "block";
-});
-
-closeIngresar.addEventListener('click', (e) => {
-    ingresarModal.style.display = "none";
-});
-
-closeTransferir.addEventListener('click', (e) => {
-    transferirModal.style.display = "none";
-});
 
