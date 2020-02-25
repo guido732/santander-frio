@@ -5,17 +5,55 @@ const server = express();
 const path = require("path");
 
 let userDb = [
-  {
-    dni: "30111000",
-    password: "pedrogato123"
-  },
-  {
-    dni: "20999111",
-    password: "marioperro123"
-  }
+	{
+		dni: "30111000",
+		password: "pedrogato123",
+	},
+	{
+		dni: "20999111",
+		password: "marioperro123",
+	},
 ];
 
 let accounts = [
+<<<<<<< HEAD
+	{
+		fullname: "Pedro Gato",
+		dni: "30111000",
+		accounts: [
+			{
+				accountNumber: 111111,
+				currency: "$",
+				balance: 10000.0,
+				extractionLimit: 1000,
+			},
+			{
+				accountNumber: 222222,
+				currency: "US$",
+				balance: 500.0,
+				extractionLimit: 1000,
+			},
+		],
+	},
+	{
+		fullname: "Mario Perro",
+		dni: "20999111",
+		accounts: [
+			{
+				accountNumber: 333333,
+				currency: "$",
+				balance: 10000.0,
+				extractionLimit: 1000,
+			},
+			{
+				accountNumber: 444444,
+				currency: "US$",
+				balance: 500.0,
+				extractionLimit: 1000,
+			},
+		],
+	},
+=======
   {
     fullname: "Pedro Gato",
     dni: "30111000",
@@ -52,13 +90,19 @@ let accounts = [
       }
     ]
   }
+>>>>>>> master
 ];
 
 let isAuth = false;
 
 const currencyExange = {
+<<<<<<< HEAD
+	$: 58.5,
+	US$: 63.5,
+=======
   $: 58.5,
   US$: 63.5
+>>>>>>> master
 };
 
 server.get("/", (req, res) => {
@@ -79,11 +123,19 @@ server.use("/scripts", express.static("scripts"));
 
 // Register new user
 server.post("/v1/users/newuser", validateExistingUser, (req, res) => {
+<<<<<<< HEAD
+	// TODO: Corroborar que las variables sean igual que lo que se manda desde el front
+	const { dni, password, fullname } = req.body;
+	userDb.push({ dni, password });
+	createAccount(dni, fullname);
+	res.status(200).json("User created");
+=======
   // TODO: Corroborar que las variables sean igual que lo que se manda desde el front
   const { dni, password, fullname } = req.body;
   userDb.push({ dni, password });
   createAccount(dni, fullname);
   res.status(200).json("User created");
+>>>>>>> master
 });
 
 //User login
@@ -94,6 +146,114 @@ server.post("/v1/users/login", userLogin, (req, res) => {
 });
 
 // InternalTransference
+<<<<<<< HEAD
+// Validación de cuentas internas (que existan)
+server.put(
+	"/v1/accounts/operations/internaltransfer",
+	getActiveUser,
+	validateAmount,
+	(req, res) => {
+		// Agregar middleware VALIDARCUENTAORIGEN/TOKEN
+		const { amount, originAccountNum, destinationAccountNum } = req.body;
+		const { activeUserIndex, activeUser } = res.locals;
+		// Obtiene indice de cuentas
+		const destinationAccountIndex = getAccountIndex(activeUser, +destinationAccountNum);
+		const originAccountIndex = getAccountIndex(activeUser, +originAccountNum);
+		if (
+			validateExistingAccounts(
+				activeUser,
+				+originAccountNum,
+				activeUser,
+				+destinationAccountNum,
+			)
+		) {
+			// TODO: Validar montos suficientes
+			if (validateSufficientFunds(activeUser, originAccountIndex, +amount)) {
+				// Realiza conversión de moneda
+				const originCurrency = activeUser.accounts[originAccountIndex].currency;
+				const destinationCurrency = activeUser.accounts[destinationAccountIndex].currency;
+				const transformedAmount = applyCurrencyExange(
+					+amount,
+					originCurrency,
+					destinationCurrency,
+				);
+
+				// Realiza operación
+				accounts[activeUserIndex].accounts[originAccountIndex].balance -= +amount;
+				accounts[activeUserIndex].accounts[
+					destinationAccountIndex
+				].balance += +transformedAmount;
+
+				// Retorna nuevo activeUser info
+				res.status(200).json(accounts[activeUserIndex]);
+			} else {
+				res.status(412).send("Insufficient funds to perform operation on origin account");
+			}
+		} else {
+			res.status(404).send("Account(s) not found");
+		}
+	},
+);
+
+// ExternalTransference
+server.put(
+	"/v1/accounts/operations/externaltransfer",
+	getActiveUser,
+	validateAmount,
+	(req, res) => {
+		// Agregar middleware VALIDARCUENTAORIGEN/TOKEN
+		// Obtiene datos del body + cuenta origen e Index de cuenta origen desde el res.locals
+		const { amount, destinationAccountNum, originAccountNum } = req.body;
+		const { activeUserIndex: originUserIndex, activeUser: originUser } = res.locals;
+		// Obtiene datos de la cuenta destino
+		const destinationUser = getAccountFromAccountNumber(+destinationAccountNum);
+		const destinationUserIndex = accounts.indexOf(destinationUser);
+		// Valida que existan las cuentas
+		if (
+			originUser &&
+			destinationUser &&
+			validateExistingAccounts(
+				originUser,
+				+originAccountNum,
+				destinationUser,
+				+destinationAccountNum,
+			)
+		) {
+			// Obtiene indice de cuentas
+			const originAccountIndex = getAccountIndex(originUser, +originAccountNum);
+			const destinationAccountIndex = getAccountIndex(
+				destinationUser,
+				+destinationAccountNum,
+			);
+
+			// TODO: Validar montos suficientes
+			if (validateSufficientFunds(originUser, originAccountIndex, +amount)) {
+				// Realiza conversión de moneda
+				const originCurrency = originUser.accounts[originAccountIndex].currency;
+				const destinationCurrency =
+					destinationUser.accounts[destinationAccountIndex].currency;
+				const transformedAmount = applyCurrencyExange(
+					+amount,
+					originCurrency,
+					destinationCurrency,
+				);
+
+				// Realiza operación
+				accounts[originUserIndex].accounts[originAccountIndex].balance -= +amount;
+				accounts[destinationUserIndex].accounts[
+					destinationAccountIndex
+				].balance += +transformedAmount;
+
+				// Retorna nuevo activeUser info
+				res.status(200).json(accounts[originUserIndex]);
+			} else {
+				res.status(412).send("Insufficient funds to perform operation on origin account");
+			}
+		} else {
+			res.status(404).send("Account(s) not found");
+		}
+	},
+=======
 server.put(
   "/v1/accounts/operations/internaltransfer",
   getActiveUser,
@@ -146,6 +306,7 @@ server.put(
       res.status(404).send("Account not found");
     }
   }
+>>>>>>> master
 );
 
 // UTILS
@@ -158,6 +319,15 @@ function validateAuth(req, res, next) {
   }
 }
 function validateExistingUser(req, res, next) {
+<<<<<<< HEAD
+	const { dni } = req.body;
+	const existingUser = findUser(dni, res);
+	if (!existingUser) {
+		next();
+	} else {
+		res.status(409).json("User already exists");
+	}
+=======
   const { dni } = req.body;
   const existingUser = findUser(dni, res);
   if (!existingUser) {
@@ -165,6 +335,7 @@ function validateExistingUser(req, res, next) {
   } else {
     res.status(409).json("User already exists");
   }
+>>>>>>> master
 }
 function findUser(userDni, res) {
   const foundUser = userDb.find(user => +user.dni === +userDni);
@@ -196,35 +367,53 @@ function userLogin(req, res, next) {
 }
 
 function createAccount(dni, fullname) {
-  const newAccount = {
-    fullname: fullname,
-    dni: dni,
-    accounts: [
-      {
-        accountNumber: generateNewAccountNumber,
-        accountType: "CA",
-        currency: "$",
-        balance: 0,
-        extractionLimit: 1000
-      }
-    ]
-  };
-  accounts.push(newAccount);
+	const newAccount = {
+		fullname: fullname,
+		dni: dni,
+		accounts: [
+			{
+				accountNumber: generateNewAccountNumber,
+				accountType: "CA",
+				currency: "$",
+				balance: 0,
+				extractionLimit: 1000,
+			},
+		],
+	};
+	accounts.push(newAccount);
 }
 function generateNewAccountNumber() {
   return Math.floor(Math.random() * 100000000);
 }
 function getActiveUser(req, res, next) {
-  const { userID } = req.body;
-  const activeUser = accounts.find(account => account.dni === userID);
-  const activeUserIndex = accounts.indexOf(activeUser);
-  if (activeUserIndex !== -1) {
-    res.locals.activeUser = activeUser;
-    res.locals.activeUserIndex = activeUserIndex;
-    next();
-  } else {
-    res.status(404).send("Origin account not found");
-  }
+	const { userID } = req.body;
+	const activeUser = accounts.find(account => account.dni === userID);
+	const activeUserIndex = accounts.indexOf(activeUser);
+	if (activeUserIndex !== -1) {
+		res.locals.activeUser = activeUser;
+		res.locals.activeUserIndex = activeUserIndex;
+		next();
+	} else {
+		res.status(404).send("Account not found");
+	}
+}
+function validateAmount(req, res, next) {
+	const { amount } = req.body;
+	return amount > 0 ? next() : res.status(400).send("Invalid amount for operation");
+}
+function validateExistingAccounts(
+	originUser,
+	originAccountNum,
+	destinationUser,
+	destinationAccountNum,
+) {
+	const originAccountValidation = originUser.accounts.filter(
+		acc => acc.accountNumber === originAccountNum,
+	);
+	const destinationAccountValidation = destinationUser.accounts.filter(
+		acc => acc.accountNumber === destinationAccountNum,
+	);
+	return !!originAccountValidation.length && !!destinationAccountValidation.length;
 }
 function validateSufficientFunds(activeUser, originAccountIndex, amount) {
   return activeUser.accounts[originAccountIndex].balance - amount >= 0
@@ -239,6 +428,11 @@ function applyCurrencyExange(amount, originCurrency, destinationCurrency) {
   } else {
     return amount;
   }
+}
+function getAccountFromAccountNumber(accountNumber) {
+	return accounts.filter(account =>
+		account.accounts.find(acc => acc.accountNumber === +accountNumber),
+	)[0];
 }
 function getAccountIndex(activeUser, accountNumber) {
   return activeUser.accounts.indexOf(
