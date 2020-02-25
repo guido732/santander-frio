@@ -1,5 +1,3 @@
-//LOGIN FETCH. CHECKED.
-
 const doLogin = async () => {
   try {
     const userDni = document.querySelector("#userdni").value;
@@ -23,3 +21,5 @@ const doLogin = async () => {
     console.log(error); //MANEJO DE ERRORES
   }
 };
+
+document.getElementById("loginAction").addEventListener("click",doLogin);

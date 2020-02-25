@@ -54,7 +54,7 @@ let accounts = [
   }
 ];
 
-let isAuth = false;
+let isAuth = true;
 
 const currencyExange = {
   $: 58.5,
@@ -92,6 +92,14 @@ server.post("/v1/users/login", userLogin, (req, res) => {
   isAuth = true;
   res.status(200).json(userData);
 });
+
+// Deposit money
+server.put("/v1/accounts/operations/depositMoney", (req,res) =>{
+    const {amount,activeUser} = req.body;
+    activeUser.accounts[0].balance += +amount;
+    res.status(200).json(activeUser);
+  }
+);
 
 // InternalTransference
 server.put(

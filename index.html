@@ -28,7 +28,7 @@
                 <div class="form-group">
                     <input type="password" class="form-control" id="password" placeholder="Tu clave">
                 </div>
-                <button type="button" class="btn btn-login" onclick="doLogin()">Ingresar</button>
+                <button type="button" class="btn btn-login" id="loginAction">Ingresar</button>
             </form>
 
 
@@ -70,7 +70,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Registrar</button>
+                    <span id="messageLabel"></span>
+                    <button type="button" class="btn btn-primary" id="registerAction">Registrar</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
                 </div>
             </div>
@@ -89,6 +90,7 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
     <script src="./scripts/loginFetch.js"></script>
+    <script src="./scripts/registerFetch.js"></script>
 </body>
 
 </html>
