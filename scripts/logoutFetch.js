@@ -1,9 +1,9 @@
-const doLogin = async () => {
+const doLogout = async () => {
   try {
-    const userDni = document.querySelector("#userdni").value;
-    const userPassword = document.querySelector("#password").value;
-    const requestBody = { dni: userDni, password: userPassword };
-    response = await fetch("http://127.0.0.1:3000/v1/users/login", {
+    let activeUser = JSON.parse(sessionStorage.getItem("activeUser"));
+    let userDni = activeUser.dni;
+    const requestBody = { dni: userDni };
+    response = await fetch("http://127.0.0.1:3000/v1/users/logout", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -13,7 +13,7 @@ const doLogin = async () => {
     const jsonResponse = await response.json();
     if (response.status === 200) {
       sessionStorage.setItem("activeUser", JSON.stringify(jsonResponse));
-      window.location.assign("http://127.0.0.1:5500/home.html");
+      window.location.assign("http://127.0.0.1:5500/");
     } else {
       console.log(jsonResponse); /// TODO: Aca hay que mostrar un modal en el front diciendo que alguno de los datos son incorrectos.
     }
@@ -22,4 +22,4 @@ const doLogin = async () => {
   }
 };
 
-document.getElementById("loginAction").addEventListener("click",doLogin);
+document.getElementById("logoutAction").addEventListener("click", doLogout);

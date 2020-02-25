@@ -5,14 +5,16 @@ const server = express();
 const path = require("path");
 
 let userDb = [
-	{
-		dni: "30111000",
-		password: "pedrogato123",
-	},
-	{
-		dni: "20999111",
-		password: "marioperro123",
-	},
+  {
+    dni: "30111000",
+    password: "pedrogato123",
+    isAuth: false
+  },
+  {
+    dni: "20999111",
+    password: "marioperro123",
+    isAuth: false
+  }
 ];
 
 let accounts = [
@@ -54,8 +56,6 @@ let accounts = [
 	},
 ];
 
-let isAuth = false;
-
 const currencyExange = {
 	$: 58.5,
 	US$: 63.5,
@@ -91,6 +91,49 @@ server.post("/v1/users/login", userLogin, (req, res) => {
 	const { userData } = req;
 	isAuth = true;
 	res.status(200).json(userData);
+});
+
+// Deposit money
+server.put(
+  "/v1/accounts/operations/depositMoney",
+  getActiveUser,
+  (req, res) => {
+    const { amount, destinationAccountNum } = req.body;
+    const { activeUserIndex, activeUser } = res.locals;
+    //Valida cuenta de deposito
+    if (validateEndAccount(destinationAccountNum, activeUser)) {
+      // Obtiene indice de cuentas
+      const destinationAccountIndex = getAccountIndex(
+        activeUser,
+        destinationAccountNum
+      );
+      //realiza la operacion
+      accounts[activeUserIndex].accounts[
+        destinationAccountIndex
+      ].balance += +amount;
+
+      //retorna nuevo userActivce info
+      res.status(200).json(accounts[activeUserIndex]);
+    } else {
+      res.status(404).send("Account not found");
+    }
+  }
+);
+
+// User's accounts current status
+server.get("/v1/users/accounts", (req, res) => {
+  const { dni } = req.body;
+  const userData = findUserData(dni);
+  res.status(200).json(userData);
+}); // El caso de error se maneja por el general, ya que este GET se hace una vez logueado el
+//Usuario por lo que el DNI ya esta previamente validado por los otros metodos.
+
+//User logout
+server.post("/v1/users/logout", (req, res) => {
+  const { dni } = req.body;
+  const user = findUser(dni);
+  user.isAuth = false;
+  res.status(200).json(null);
 });
 
 // InternalTransference
@@ -205,11 +248,13 @@ server.put(
 // UTILS
 
 function validateAuth(req, res, next) {
-	if (isAuth) {
-		next();
-	} else {
-		res.status(403).send("403 - Forbidden");
-	}
+  const { dni } = req.body;
+  const user = findUser(dni);
+  if (user.isAuth) {
+    next();
+  } else {
+    res.status(403).send("403 - Forbidden");
+  }
 }
 function validateExistingUser(req, res, next) {
 	const { dni } = req.body;
@@ -233,37 +278,45 @@ function findUserData(userDni) {
 	return foundData;
 }
 function userLogin(req, res, next) {
-	const { dni, password } = req.body;
-	const existingUser = findUser(dni);
-	if (existingUser) {
-		const userPassword = existingUser.password;
-		if (password === userPassword) {
-			const userData = findUserData(dni);
-			req.userData = userData;
-			next();
-		} else {
-			res.status(401).json("Wrong password");
-		}
-	} else {
-		res.status(404).json("User does not exists");
-	}
+  const { dni, password } = req.body;
+  const existingUser = findUser(dni);
+  if (existingUser) {
+    const userPassword = existingUser.password;
+    if (password === userPassword) {
+      const userData = findUserData(dni);
+      existingUser.isAuth = true;
+      req.userData = userData;
+      next();
+    } else {
+      res.status(401).json("Wrong password");
+    }
+  } else {
+    res.status(404).json("User does not exists");
+  }
 }
 
 function createAccount(dni, fullname) {
-	const newAccount = {
-		fullname: fullname,
-		dni: dni,
-		accounts: [
-			{
-				accountNumber: generateNewAccountNumber,
-				accountType: "CA",
-				currency: "$",
-				balance: 0,
-				extractionLimit: 1000,
-			},
-		],
-	};
-	accounts.push(newAccount);
+  const newAccount = {
+    fullname: fullname,
+    dni: dni,
+    accounts: [
+      {
+        accountNumber: generateNewAccountNumber,
+        accountType: "CA",
+        currency: "$",
+        balance: 0,
+        extractionLimit: 1000
+      },
+      {
+        accountNumber: generateNewAccountNumber,
+        accountType: "CA",
+        currency: "US$",
+        balance: 0,
+        extractionLimit: 1000
+      }
+    ]
+  };
+  accounts.push(newAccount);
 }
 function generateNewAccountNumber() {
 	return Math.floor(Math.random() * 100000000);

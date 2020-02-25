@@ -12,13 +12,11 @@
     />
     <link rel="stylesheet" href="./styles/style.css" />
   </head>
-
   <body>
     <header>
-        <span class="logo">Santanderfrio</span>
-        <a class="logout" href="./index.html">Cerrar sesión</a>
+      <span class="logo">Santanderfrio</span>
+      <button class="logout" id="logoutAction">Cerrar sesión</button>
     </header>
-
     <div class="container-homebanking">
       <div class="container-left">
         <div class="box">
@@ -30,19 +28,18 @@
                 <span id="name"></span>.</span
               >
             </div>
-        </div>
+          </div>
           <h5 class="center">Tus cuentas</h5>
           <div class="wallet">
             <div class="ars">
-              <span class="currency">$ </span><span id="cuentaCorriente"></span>
+              <span class="currency">$ </span><span id="walletArs"></span>
             </div>
             <div class="usd">
-              <span class="currency">u$s </span><span id="cajaAhorro"></span>
+              <span class="currency">u$s </span><span id="walletUsd"></span>
             </div>
           </div>
         </div>
       </div>
-
       <div class="container-middle">
         <div class="box">
           <button
@@ -73,7 +70,6 @@
           </button>
         </div>
       </div>
-
       <div class="container-right">
         <div class="box">
           <span>Cargar celu</span>
@@ -82,7 +78,6 @@
         </div>
       </div>
     </div>
-
     <div
       class="modal fade"
       id="addMoneyModal"
@@ -91,39 +86,38 @@
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-        <div class="modal-dialog reg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4>Ingreso de dinero *</h4>
+      <div class="modal-dialog reg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4>Ingreso de dinero *</h4>
             <button
               type="button"
               class="close"
               data-dismiss="modal"
               aria-label="Close"
             >
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">$</span>
                 </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
-                            </div>
-                <input type="number" id="ingresaAmount" class="form-control" />
-                        </div>
-                        <span>* A cuenta pesos</span>
-                    </form>
-                </div>
-                <div class="modal-footer">
-            <button type="submit" id="btn-transfInterna" class="btn btn-dark">
+                <input type="number" id="qtyDeposit" class="form-control" />
+              </div>
+              <span>* A cuenta pesos</span>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" id="btn-internTransf" class="btn btn-dark">
               Ingresar dinero
             </button>
-                </div>
-            </div>
+          </div>
         </div>
       </div>
-
+    </div>
     <div
       class="modal fade"
       id="transferModal"
@@ -132,57 +126,56 @@
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-        <div class="modal-dialog reg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4>Transferencia a terceros</h4>
+      <div class="modal-dialog reg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4>Transferencia a terceros</h4>
             <button
               type="button"
               class="close"
               data-dismiss="modal"
               aria-label="Close"
             >
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <h5>Desde</h5>
+              <div class="input-group mb-3">
+                <select class="custom-select" id="inputCuentaSelectTransf">
+                  <option selected value="111111">Cuenta en pesos</option>
+                  <option value="222222">Cuenta en dólares</option>
+                </select>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">$</span>
                 </div>
-                <div class="modal-body">
-                    <form>
-                        <h5>Desde</h5>
-
-                        <div class="input-group mb-3">
-                            <select class="custom-select" id="inputCuentaSelectTransf">
-                                <option selected value="111111">Cuenta en pesos</option>
-                                <option value="222222">Cuenta en dólares</option>
-                            </select>
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
-                            </div>
                 <input
                   type="number"
                   class="form-control"
                   id="transfiereAmount"
                 />
-                        </div>
-                        <h5>Hacia</h5>
-                        <div class="form-group">
+              </div>
+              <h5>Hacia</h5>
+              <div class="form-group">
                 <input
                   type="number"
                   class="form-control"
                   id="dni"
                   placeholder="Ingresá el DNI destino"
                 />
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
             <button type="submit" id="btn-transfInterna" class="btn btn-dark">
               Transferir dinero
             </button>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <div
@@ -193,48 +186,46 @@
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-        <div class="modal-dialog reg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4>Compra de moneda extranjera</h4>
+      <div class="modal-dialog reg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4>Compra de moneda extranjera</h4>
             <button
               type="button"
               class="close"
               data-dismiss="modal"
               aria-label="Close"
             >
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Tipo de cambio: 1 usd = <span id="exchangeRate">63</span> ars</p>
+            <form>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">u$s</span>
                 </div>
-                <div class="modal-body">
-                    <p>Tipo de cambio: 1 usd = <span id="exchangeRate">63</span> ars</p>
-                    <form>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">u$s</span>
-                            </div>
                 <input
                   type="number"
                   class="form-control"
                   id="transfiereAmount"
                 />
-                        </div>
-                        <p>Subtotal: $<span id="exchangeAction"></span></p>
-                        <p>Impuesto PAIS (30%): $<span id="exchangeTax"></span></p>
-                        <p>Total: $<span id="exchangeTotal"></span></p>
-                    </form>
-                </div>
-                <div class="modal-footer">
-        <button type="submit" id="btn-transfInterna" class="btn btn-dark">
+              </div>
+              <p>Subtotal: $<span id="exchangeAction"></span></p>
+              <p>Impuesto PAIS (30%): $<span id="exchangeTax"></span></p>
+              <p>Total: $<span id="exchangeTotal"></span></p>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" id="btn-transfInterna" class="btn btn-dark">
               Comprar
-        </button>
-          </div>
+            </button>
           </div>
         </div>
-        </div>
-
+      </div>
+    </div>
     <footer>Hecho con mucho amor por Alexis, Guido e Iván.</footer>
-
     <script
       src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
       integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
@@ -251,5 +242,9 @@
       crossorigin="anonymous"
     ></script>
     <script src="./scripts/home.js"></script>
+    <script src="./scripts/logoutFetch.js"></script>
+    <script>
+      window.onload = renderData;
+    </script>
   </body>
 </html>
