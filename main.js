@@ -206,10 +206,6 @@ server.put(
 	},
 );
 
-server.get("/v1/accounts/operations/getexangerate", getCurrencyExange, (req, res) => {
-	res.status(200).json(currencyExange);
-});
-
 // UTILS
 
 function validateAuth(req, res, next) {
@@ -344,11 +340,9 @@ async function getCurrencyExange(req, res, next) {
 		currencyExange.US$ = currentRate;
 		currencyExange.$ = currentRate;
 		currencyExange.lastUpdated = new Date();
-		console.log(currencyExange);
-
 		next();
 	} catch (error) {
-		next();
+		res.status(400).send("Cannot get current exange rate. Try again later");
 	}
 }
 
