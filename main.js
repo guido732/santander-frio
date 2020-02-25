@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const server = express();
 const path = require("path");
+const axios = require("axios");
 
 let userDb = [
   {
@@ -59,6 +60,7 @@ let accounts = [
 const currencyExange = {
 	$: 58.5,
 	US$: 63.5,
+	lastUpdated: "",
 };
 
 server.get("/", (req, res) => {
@@ -142,6 +144,7 @@ server.put(
 	"/v1/accounts/operations/internaltransfer",
 	getActiveUser,
 	validateAmount,
+	getCurrencyExange,
 	(req, res) => {
 		// Agregar middleware VALIDARCUENTAORIGEN/TOKEN
 		const { amount, originAccountNum, destinationAccountNum } = req.body;
@@ -190,6 +193,7 @@ server.put(
 	"/v1/accounts/operations/externaltransfer",
 	getActiveUser,
 	validateAmount,
+	getCurrencyExange,
 	(req, res) => {
 		// Agregar middleware VALIDARCUENTAORIGEN/TOKEN
 		// Obtiene datos del body + cuenta origen e Index de cuenta origen desde el res.locals
@@ -294,7 +298,6 @@ function userLogin(req, res, next) {
     res.status(404).json("User does not exists");
   }
 }
-
 function createAccount(dni, fullname) {
   const newAccount = {
     fullname: fullname,
@@ -378,6 +381,22 @@ function validateEndAccount(inputAccount, activeUser) {
 		account => account.accountNumber === +inputAccount,
 	);
 	return !!accountFound.length;
+}
+async function getCurrencyExange(req, res, next) {
+	let d = new Date();
+	let dateParam = String(d.getFullYear()) + "-" + String(d.getMonth() + 1);
+	let url = `https://apis.datos.gob.ar/series/api/series/?ids=168.1_T_CAMBIOR_D_0_0_26&start_date=${dateParam}&limit=1`;
+	try {
+		const response = await axios.get(url);
+		const data = response.data;
+		const currentRate = data.data[0][1];
+		currencyExange.US$ = currentRate;
+		currencyExange.$ = currentRate;
+		currencyExange.lastUpdated = new Date();
+		next();
+	} catch (error) {
+		res.status(400).send("Cannot get current exange rate. Try again later");
+	}
 }
 
 // ERROR DETECTION
