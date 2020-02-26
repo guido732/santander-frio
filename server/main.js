@@ -294,14 +294,12 @@ function createAccount(dni, fullname) {
 		accounts: [
 			{
 				accountNumber: generateNewAccountNumber(),
-				accountType: "CA",
 				currency: "$",
 				balance: 0,
 				extractionLimit: 1000,
 			},
 			{
 				accountNumber: generateNewAccountNumber(),
-				accountType: "CA",
 				currency: "US$",
 				balance: 0,
 				extractionLimit: 1000,
