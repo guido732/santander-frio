@@ -123,13 +123,14 @@ h4 {
 }
 
 .container-homebanking {
-  margin: 20px;
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: 1fr 1fr 1fr;
-      grid-template-columns: 1fr 1fr 1fr;
+  -ms-grid-columns: (1fr)[2];
+      grid-template-columns: repeat(2, 1fr);
   -webkit-column-gap: 20px;
           column-gap: 20px;
+  max-width: 1200px;
+  margin: 20px auto;
 }
 
 .container-homebanking .container-left .user-data {
@@ -365,4 +366,3 @@ footer a {
     left: 200px;
   }
 }
-/*# sourceMappingURL=style.css.map */
