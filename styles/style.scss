@@ -21,13 +21,6 @@ body {
 	background-size: cover;
 }
 
-.container {
-	display: grid;
-	grid-template-columns: 1.5fr 1fr;
-	height: 100%;
-	padding: unset;
-}
-
 header {
 	display: flex;
 	justify-content: space-between;
@@ -40,7 +33,29 @@ h3,
 h4 {
 	padding-bottom: 10px;
 }
+h4 {
+	display: inline-block;
+}
+footer {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	padding: 20px;
+	display: flex;
+	justify-content: center;
+	font-size: 0.8rem;
+	a {
+		display: flex;
+		padding: 0 10px;
+	}
+}
 
+.container {
+	display: grid;
+	grid-template-columns: 1.5fr 1fr;
+	height: 100%;
+	padding: unset;
+}
 .login {
 	box-shadow: $card-shadow;
 	padding: 60px;
@@ -171,7 +186,8 @@ h4 {
 			row-gap: 20px;
 			button {
 				width: 100%;
-				border: 1px solid black;
+				background-color: white;
+				border: 1px solid rgba($color: #000000, $alpha: 0.2);
 				border-radius: 6px;
 			}
 		}
@@ -200,10 +216,6 @@ h4 {
 	}
 }
 
-h4 {
-	display: inline-block;
-}
-
 .logout {
 	float: right;
 }
@@ -213,19 +225,6 @@ h4 {
 	box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.089);
 	border-radius: 6px;
 	padding: 15px 40px;
-}
-
-footer {
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	padding: 20px;
-	display: flex;
-	justify-content: center;
-	a {
-		display: flex;
-		padding: 0 10px;
-	}
 }
 
 .modal-dialog.reg {
@@ -281,6 +280,15 @@ input[type="number"] {
 	transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 	animation: mymove 4s infinite;
 	animation-delay: 1s;
+}
+
+.btn-hover {
+	transition: 0.2s ease;
+
+	&:hover {
+		// transform: translateY(-3px);
+		box-shadow: $card-shadow;
+	}
 }
 
 @keyframes mymove {
