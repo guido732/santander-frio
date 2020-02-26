@@ -321,6 +321,7 @@ footer a {
   border-radius: unset;
   border-bottom: 1px solid;
   padding: 6px 0;
+  padding-left: 0.5rem;
 }
 
 .modal-dialog.reg .modal-body form input:focus {
