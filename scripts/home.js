@@ -1,23 +1,35 @@
+JSON.parse(sessionStorage.getItem("activeUser")) === null
+	? window.location.assign("../")
+	: null;
+
 // Funciones generales
-const findAccountData = (activeUser,currency) => {
+const findAccountData = (activeUser, currency) => {
 	const foundAccount = activeUser.accounts.find(acc => acc.currency === currency);
 	const data = {
-		currentBalance : foundAccount.balance,
-		accountNumber : foundAccount.accountNumber,
-	}
+		currentBalance: foundAccount.balance,
+		accountNumber: foundAccount.accountNumber,
+	};
 	return data;
 };
 const renderData = () => {
 	let activeUser = JSON.parse(sessionStorage.getItem("activeUser"));
 	let name = activeUser.fullname;
 	document.getElementById("name").innerHTML = name;
-	document.getElementById("walletArs").innerHTML = findAccountData(activeUser,"$").currentBalance.toFixed(2);
-	document.getElementById("walletUsd").innerHTML = findAccountData(activeUser,"US$").currentBalance.toFixed(2);
+	document.getElementById("walletArs").innerHTML = findAccountData(
+		activeUser,
+		"$",
+	).currentBalance.toFixed(2);
+	document.getElementById("walletUsd").innerHTML = findAccountData(
+		activeUser,
+		"US$",
+	).currentBalance.toFixed(2);
 };
-const applyShadowBox = (action,box) => {
+const applyShadowBox = (action, box) => {
 	$(`.${box}`).addClass(`${action}-animate-border`);
-	setTimeout(()=> {$(`.${box}`).removeClass(`${action}-animate-border`);},4000);
-}
+	setTimeout(() => {
+		$(`.${box}`).removeClass(`${action}-animate-border`);
+	}, 4000);
+};
 
 // FETCHS
 
@@ -29,7 +41,7 @@ const addMoney = async e => {
 	let body = {
 		amount: document.getElementById("qtyDeposit").value,
 		userID: dni,
-		destinationAccountNum: findAccountData(activeUser,"$").accountNumber
+		destinationAccountNum: findAccountData(activeUser, "$").accountNumber,
 	};
 	response = await fetch("http://127.0.0.1:3000/v1/accounts/operations/depositMoney", {
 		method: "PUT",
@@ -42,7 +54,7 @@ const addMoney = async e => {
 
 	if (response.status === 200) {
 		sessionStorage.setItem("activeUser", JSON.stringify(jsonResponse));
-		applyShadowBox('success','ars');
+		applyShadowBox("success", "ars");
 		renderData();
 	} else {
 		console.log(jsonResponse); /// TODO: Aca hay que mostrar un modal en el front diciendo que alguno de los datos son incorrectos.
@@ -57,21 +69,24 @@ const transferExternal = async e => {
 	const accountOrigin = document.getElementById("inputCuentaSelectTransf").value;
 	let body = {
 		amount: document.getElementById("transfAmount").value,
-		originAccountNum: findAccountData(activeUser,accountOrigin).accountNumber,
-		destinationAccountNum: document.getElementById('cbu').value,
+		originAccountNum: findAccountData(activeUser, accountOrigin).accountNumber,
+		destinationAccountNum: document.getElementById("cbu").value,
 		userID: dni,
 	};
-	response = await fetch("http://127.0.0.1:3000/v1/accounts/operations/externaltransfer", {
-		method: "PUT",
-		body: JSON.stringify(body),
-		headers: {
-			"Content-Type": "application/json",
+	response = await fetch(
+		"http://127.0.0.1:3000/v1/accounts/operations/externaltransfer",
+		{
+			method: "PUT",
+			body: JSON.stringify(body),
+			headers: {
+				"Content-Type": "application/json",
+			},
 		},
-	});
+	);
 	const jsonResponse = await response.json();
 	if (response.status === 200) {
 		sessionStorage.setItem("activeUser", JSON.stringify(jsonResponse));
-		applyShadowBox('danger','ars');
+		applyShadowBox("danger", "ars");
 		renderData();
 	} else {
 		console.log(jsonResponse); /// TODO: Aca hay que mostrar un modal en el front diciendo que alguno de los datos son incorrectos.
@@ -85,31 +100,32 @@ const exchangeMoney = async e => {
 	const { dni } = activeUser;
 	let body = {
 		amount: document.getElementById("exchangeAmount").value,
-		originAccountNum: findAccountData(activeUser,"$").accountNumber,
-		destinationAccountNum: findAccountData(activeUser,"US$").accountNumber,
+		originAccountNum: findAccountData(activeUser, "$").accountNumber,
+		destinationAccountNum: findAccountData(activeUser, "US$").accountNumber,
 		userID: dni,
 	};
-	response = await fetch("http://127.0.0.1:3000/v1/accounts/operations/internaltransfer", {
-		method: "PUT",
-		body: JSON.stringify(body),
-		headers: {
-			"Content-Type": "application/json",
+	response = await fetch(
+		"http://127.0.0.1:3000/v1/accounts/operations/internaltransfer",
+		{
+			method: "PUT",
+			body: JSON.stringify(body),
+			headers: {
+				"Content-Type": "application/json",
+			},
 		},
-	});
+	);
 	const jsonResponse = await response.json();
 	if (response.status === 200) {
 		sessionStorage.setItem("activeUser", JSON.stringify(jsonResponse));
-		applyShadowBox('danger','ars');
-		applyShadowBox('success','usd');
+		applyShadowBox("danger", "ars");
+		applyShadowBox("success", "usd");
 		renderData();
 	} else {
 		console.log(jsonResponse); /// TODO: Aca hay que mostrar un modal en el front diciendo que alguno de los datos son incorrectos.
 	}
 };
 
-
 // Selectores
 document.getElementById("btn-internTransf").addEventListener("click", addMoney);
 document.getElementById("btn-externTransf").addEventListener("click", transferExternal);
-document.getElementById("btn-exchangeMoney").addEventListener('click', exchangeMoney);
-
+document.getElementById("btn-exchangeMoney").addEventListener("click", exchangeMoney);
