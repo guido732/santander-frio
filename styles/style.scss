@@ -214,6 +214,12 @@ footer {
   bottom: 0;
   right: 0;
   padding: 20px;
+  display: flex;
+  justify-content: center;
+  a{
+    display: flex;
+    padding: 0 10px;
+  }
 }
 
 
@@ -248,4 +254,23 @@ footer {
       width: 100%;
     }
   }
+}
+
+.success-animate-border{
+    box-shadow: 0px 0px 16px 1px rgb(75, 143, 78);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    animation: mymove 4s infinite;
+    animation-delay: 1s;
+}
+
+.danger-animate-border{
+  box-shadow: 0px 0px 16px 1px rgb(143, 75, 75);
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  animation: mymove 4s infinite;
+  animation-delay: 1s;
+}
+
+@keyframes mymove {
+  from {left: 0px;}
+  to {left: 200px;}
 }

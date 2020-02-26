@@ -13,7 +13,7 @@ const doLogout = async () => {
 		const jsonResponse = await response.json();
 		if (response.status === 200) {
 			sessionStorage.setItem("activeUser", JSON.stringify(jsonResponse));
-			window.location.assign("/");
+			window.location.assign("../");
 		} else {
 			console.log(jsonResponse); /// TODO: Aca hay que mostrar un modal en el front diciendo que alguno de los datos son incorrectos.
 		}
