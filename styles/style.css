@@ -72,8 +72,8 @@ footer a {
 }
 
 .login {
-  -webkit-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
-          box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
   padding: 60px;
   background: white;
   display: -ms-inline-grid;
@@ -161,6 +161,11 @@ footer a {
   margin: 20px auto;
 }
 
+.container-homebanking .container-main .box {
+  -webkit-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
 .container-homebanking .container-left .user-data {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -182,6 +187,8 @@ footer a {
   background-size: 80%;
   -webkit-box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
           box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
 .container-homebanking .container-left .user-data .user-image img {
@@ -213,7 +220,7 @@ footer a {
 .container-homebanking .container-left .wallet .ars,
 .container-homebanking .container-left .wallet .usd {
   width: 200px;
-  border: 1px solid black;
+  border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 6px;
   text-align: center;
   padding: 10px;
@@ -368,8 +375,8 @@ input[type="number"] {
 }
 
 .btn-hover:hover {
-  -webkit-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
-          box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
 @-webkit-keyframes mymove {
