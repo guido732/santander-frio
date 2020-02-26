@@ -1,7 +1,7 @@
 // Funciones generales
 const findAccountData = (activeUser,currency) => {
 	const foundAccount = activeUser.accounts.find(acc => acc.currency === currency);
-	data = {
+	const data = {
 		currentBalance : foundAccount.balance,
 		accountNumber : foundAccount.accountNumber,
 	}
@@ -31,7 +31,6 @@ const addMoney = async e => {
 		userID: dni,
 		destinationAccountNum: findAccountData(activeUser,"$").accountNumber
 	};
-	console.log("El body a mandar es: ",body);
 	response = await fetch("http://127.0.0.1:3000/v1/accounts/operations/depositMoney", {
 		method: "PUT",
 		body: JSON.stringify(body),
@@ -62,7 +61,6 @@ const transferExternal = async e => {
 		destinationAccountNum: document.getElementById('cbu').value,
 		userID: dni,
 	};
-	console.log("El body a mandar es:",body);
 	response = await fetch("http://127.0.0.1:3000/v1/accounts/operations/externaltransfer", {
 		method: "PUT",
 		body: JSON.stringify(body),
@@ -91,7 +89,6 @@ const exchangeMoney = async e => {
 		destinationAccountNum: findAccountData(activeUser,"US$").accountNumber,
 		userID: dni,
 	};
-	console.log("El body a mandar es: ",body);
 	response = await fetch("http://127.0.0.1:3000/v1/accounts/operations/internaltransfer", {
 		method: "PUT",
 		body: JSON.stringify(body),
