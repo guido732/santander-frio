@@ -126,25 +126,38 @@ const exchangeMoney = async e => {
 	}
 };
 
-const showTransactionDetails = () => {
+const showTransactionDetails = async () => {
 	const arsAmount = document.getElementById("exchangeAmount").value;
 	const exchangeRate = document.getElementById("exchangeRate");
 	const usdAmount = document.getElementById("usdAmount");
 	const exchangeTax = document.getElementById("exchangeTax");
 	const totalAmount = document.getElementById("exchangeTotal");
 
-	getExangeRate().then(response => (exchangeRate.textContent = response.US$));
-	exchangeTax.textContent = +arsAmount * 0.3;
+	await getExangeRate().then(response => (exchangeRate.textContent = response.US$));
+	if (exchangeRate.textContent === "N/A") {
+		exchangeTax.textContent = "N/A";
+		usdAmount.textContent = "N/A";
+		totalAmount.textContent = "N/A";
+	} else {
+		exchangeTax.textContent = (+arsAmount * 0.3).toFixed(2);
 	usdAmount.textContent = (+arsAmount / exchangeRate.textContent).toFixed(2);
 	totalAmount.textContent = +arsAmount + +exchangeTax.textContent;
+	}
 };
 
 const getExangeRate = async () => {
+	try {
 	const response = await fetch(
 		"http://127.0.0.1:3000/v1/accounts/operations/getexangerate",
 	);
 	const jsonResponse = await response.json();
 	return jsonResponse;
+	} catch {
+		const errorContainer = document.getElementById("error-message");
+		errorContainer.style.color = "red";
+		errorContainer.textContent = "No se ha podido obtener el tipo de cambio";
+		return { US$: "N/A" };
+	}
 };
 
 // Selectores
