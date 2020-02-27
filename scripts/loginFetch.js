@@ -15,6 +15,11 @@ const doLogin = async () => {
 			sessionStorage.setItem("activeUser", JSON.stringify(jsonResponse));
 			window.location.assign("./home");
 		} else {
+			let message;
+			if(response.status === 401){
+				message = 'Contraseña incorrecta.'
+			}else{message = 'Usuario inexistente.'};
+			document.getElementById('loginMessageLabel').innerHTML = `<div class="alert alert-danger" role="alert">${message}</div>`;
 			console.log(jsonResponse); /// TODO: Aca hay que mostrar un modal en el front diciendo que alguno de los datos son incorrectos.
 		}
 	} catch (error) {
@@ -22,4 +27,10 @@ const doLogin = async () => {
 	}
 };
 
+const hideMessages = () => {
+	const messageLabel = document.getElementById('loginMessageLabel');
+	if(messageLabel){messageLabel.innerHTML = '';}
+}
+
 document.getElementById("loginAction").addEventListener("click", doLogin);
+document.getElementById("userdni").addEventListener("click",hideMessages);
