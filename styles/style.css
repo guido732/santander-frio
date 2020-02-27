@@ -52,6 +52,9 @@ footer {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   font-size: 0.8rem;
 }
 
@@ -81,7 +84,9 @@ footer a {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  height: 70%;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
   border-radius: 5px;
   -webkit-transform: translateY(-10px);
           transform: translateY(-10px);
@@ -113,6 +118,14 @@ footer a {
   text-shadow: 2px 1px 2px rgba(150, 150, 150, 0.55);
 }
 
+.login form .btn-login:hover {
+  background: #a11c1c;
+}
+
+.login .register {
+  margin-top: 20px;
+}
+
 .login .register .btn-register {
   color: white;
   border: unset;
@@ -120,6 +133,10 @@ footer a {
   width: 50%;
   display: block;
   text-shadow: 2px 1px 2px rgba(150, 150, 150, 0.55);
+}
+
+.login .register .btn-register:hover {
+  background: rgba(0, 0, 0, 0.76);
 }
 
 .greeting {
@@ -254,6 +271,11 @@ footer a {
   border-radius: 6px;
 }
 
+.container-homebanking .container-middle .box button:focus {
+  -webkit-box-shadow: unset;
+          box-shadow: unset;
+}
+
 .container-homebanking .container-right {
   display: -ms-grid;
   display: grid;
@@ -380,6 +402,10 @@ input[type="number"] {
           box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
+.alert-danger {
+  text-align: center;
+}
+
 @-webkit-keyframes mymove {
   from {
     left: 0px;
@@ -397,3 +423,4 @@ input[type="number"] {
     left: 200px;
   }
 }
+/*# sourceMappingURL=style.css.map */
