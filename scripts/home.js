@@ -99,7 +99,7 @@ const exchangeMoney = async e => {
 	let activeUser = JSON.parse(sessionStorage.getItem("activeUser"));
 	const { dni } = activeUser;
 	let body = {
-		amount: document.getElementById("exchangeAmount").value,
+		amount: document.getElementById("exchangeTotal").textContent,
 		originAccountNum: findAccountData(activeUser, "$").accountNumber,
 		destinationAccountNum: findAccountData(activeUser, "US$").accountNumber,
 		userID: dni,
@@ -119,13 +119,38 @@ const exchangeMoney = async e => {
 		sessionStorage.setItem("activeUser", JSON.stringify(jsonResponse));
 		applyShadowBox("danger", "ars");
 		applyShadowBox("success", "usd");
+		document.getElementById("exchangeAmount").value = "";
 		renderData();
 	} else {
 		console.log(jsonResponse); /// TODO: Aca hay que mostrar un modal en el front diciendo que alguno de los datos son incorrectos.
 	}
 };
 
+const showTransactionDetails = () => {
+	const arsAmount = document.getElementById("exchangeAmount").value;
+	const exchangeRate = document.getElementById("exchangeRate");
+	const usdAmount = document.getElementById("usdAmount");
+	const exchangeTax = document.getElementById("exchangeTax");
+	const totalAmount = document.getElementById("exchangeTotal");
+
+	getExangeRate().then(response => (exchangeRate.textContent = response.US$));
+	exchangeTax.textContent = +arsAmount * 0.3;
+	usdAmount.textContent = (+arsAmount / exchangeRate.textContent).toFixed(2);
+	totalAmount.textContent = +arsAmount + +exchangeTax.textContent;
+};
+
+const getExangeRate = async () => {
+	const response = await fetch(
+		"http://127.0.0.1:3000/v1/accounts/operations/getexangerate",
+	);
+	const jsonResponse = await response.json();
+	return jsonResponse;
+};
+
 // Selectores
 document.getElementById("btn-internTransf").addEventListener("click", addMoney);
 document.getElementById("btn-externTransf").addEventListener("click", transferExternal);
 document.getElementById("btn-exchangeMoney").addEventListener("click", exchangeMoney);
+document
+	.getElementById("exchangeAmount")
+	.addEventListener("input", showTransactionDetails);
