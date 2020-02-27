@@ -137,6 +137,7 @@ server.put(
 		// Obtiene indice de cuentas
 		const destinationAccountIndex = getAccountIndex(activeUser, +destinationAccountNum);
 		const originAccountIndex = getAccountIndex(activeUser, +originAccountNum);
+
 		if (
 			validateExistingAccounts(
 				activeUser,
@@ -150,8 +151,9 @@ server.put(
 				// Realiza conversión de moneda
 				const originCurrency = activeUser.accounts[originAccountIndex].currency;
 				const destinationCurrency = activeUser.accounts[destinationAccountIndex].currency;
+				const netAmount = +amount / 1.3;
 				const transformedAmount = applyCurrencyExange(
-					+amount,
+					+netAmount,
 					originCurrency,
 					destinationCurrency,
 				);
