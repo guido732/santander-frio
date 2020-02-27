@@ -18,15 +18,6 @@ body {
   background-size: cover;
 }
 
-.container {
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: 1.5fr 1fr;
-      grid-template-columns: 1.5fr 1fr;
-  height: 100%;
-  padding: unset;
-}
-
 header {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -46,9 +37,43 @@ h4 {
   padding-bottom: 10px;
 }
 
+h4 {
+  display: inline-block;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  font-size: 0.8rem;
+}
+
+footer a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0 10px;
+}
+
+.container {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1.5fr 1fr;
+      grid-template-columns: 1.5fr 1fr;
+  height: 100%;
+  padding: unset;
+}
+
 .login {
-  -webkit-box-shadow: 0px 0px 13px 5px rgba(0, 0, 0, 0.32);
-          box-shadow: 0px 0px 13px 5px rgba(0, 0, 0, 0.32);
+  -webkit-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
   padding: 60px;
   background: white;
   display: -ms-inline-grid;
@@ -57,6 +82,9 @@ h4 {
       -ms-flex-align: center;
           align-items: center;
   height: 70%;
+  border-radius: 5px;
+  -webkit-transform: translateY(-10px);
+          transform: translateY(-10px);
 }
 
 .login form input {
@@ -103,14 +131,14 @@ h4 {
   font-family: Signika;
   font-size: 30px;
   color: #d40000;
-  text-shadow: 2px 1px 2px rgba(150, 150, 150, 0.55);
+  text-shadow: 0px 1px 5px rgba(160, 0, 0, 0.1);
 }
 
 .logo {
   font-family: Signika;
   font-size: 24px;
   color: #d40000;
-  text-shadow: 2px 1px 2px rgba(150, 150, 150, 0.55);
+  text-shadow: 0px 1px 5px rgba(160, 0, 0, 0.1);
 }
 
 .center {
@@ -123,13 +151,19 @@ h4 {
 }
 
 .container-homebanking {
-  margin: 20px;
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: 1fr 1fr 1fr;
-      grid-template-columns: 1fr 1fr 1fr;
+  -ms-grid-columns: (1fr)[2];
+      grid-template-columns: repeat(2, 1fr);
   -webkit-column-gap: 20px;
           column-gap: 20px;
+  max-width: 1200px;
+  margin: 20px auto;
+}
+
+.container-homebanking .container-main .box {
+  -webkit-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
 .container-homebanking .container-left .user-data {
@@ -153,6 +187,8 @@ h4 {
   background-size: 80%;
   -webkit-box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
           box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
 .container-homebanking .container-left .user-data .user-image img {
@@ -184,7 +220,7 @@ h4 {
 .container-homebanking .container-left .wallet .ars,
 .container-homebanking .container-left .wallet .usd {
   width: 200px;
-  border: 1px solid black;
+  border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 6px;
   text-align: center;
   padding: 10px;
@@ -213,7 +249,8 @@ h4 {
 
 .container-homebanking .container-middle .box button {
   width: 100%;
-  border: 1px solid black;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 6px;
 }
 
@@ -254,10 +291,6 @@ h4 {
   grid-column: 1 / span 2;
 }
 
-h4 {
-  display: inline-block;
-}
-
 .logout {
   float: right;
 }
@@ -268,26 +301,6 @@ h4 {
           box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.089);
   border-radius: 6px;
   padding: 15px 40px;
-}
-
-footer {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  padding: 20px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
-footer a {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 0 10px;
 }
 
 .modal-dialog.reg {
@@ -308,6 +321,7 @@ footer a {
   border-radius: unset;
   border-bottom: 1px solid;
   padding: 6px 0;
+  padding-left: 0.5rem;
 }
 
 .modal-dialog.reg .modal-body form input:focus {
@@ -324,6 +338,14 @@ footer a {
 .modal-dialog.reg .modal-footer button {
   display: block;
   width: 100%;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"] {
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+  margin: 0;
 }
 
 .success-animate-border {
@@ -348,6 +370,16 @@ footer a {
           animation-delay: 1s;
 }
 
+.btn-hover {
+  -webkit-transition: 0.2s ease;
+  transition: 0.2s ease;
+}
+
+.btn-hover:hover {
+  -webkit-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
 @-webkit-keyframes mymove {
   from {
     left: 0px;
@@ -365,4 +397,3 @@ footer a {
     left: 200px;
   }
 }
-/*# sourceMappingURL=style.css.map */

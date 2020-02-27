@@ -20,14 +20,14 @@
 			</button>
 		</header>
 		<div class="container-homebanking">
-			<div class="container-left">
+			<div class="container-main container-left">
 				<div class="box">
 					<div class="user-data">
 						<div class="user-image"></div>
 						<div class="greeting">
 							<span
 								>Bienvenido, <br />
-								<span id="name"></span>.</span
+								<span id="name" class="font-weight-bold"></span>.</span
 							>
 						</div>
 					</div>
@@ -42,11 +42,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="container-middle">
+			<div class="container-main container-middle">
 				<div class="box">
 					<button
 						type="button"
-						class="btn"
+						class="btn btn-hover"
 						data-toggle="modal"
 						data-target="#addMoneyModal"
 						id="ingresar"
@@ -55,7 +55,7 @@
 					</button>
 					<button
 						type="button"
-						class="btn"
+						class="btn btn-hover"
 						data-toggle="modal"
 						data-target="#transferModal"
 						id="transferir"
@@ -64,7 +64,7 @@
 					</button>
 					<button
 						type="button"
-						class="btn"
+						class="btn btn-hover"
 						data-toggle="modal"
 						data-target="#exchangeModal"
 					>
@@ -72,13 +72,13 @@
 					</button>
 				</div>
 			</div>
-			<div class="container-right">
+			<!-- <div class="container-main container-right">
 				<div class="box">
 					<span>Cargar celu</span>
 					<span>Cargar SUBE</span>
 					<span class="double">Pagar Servicios</span>
 				</div>
-			</div>
+			</div> -->
 		</div>
 		<div
 			class="modal fade"
@@ -111,7 +111,7 @@
 						<button
 							type="submit"
 							id="btn-internTransf"
-							class="btn btn-dark"
+							class="btn btn-primary"
 							data-dismiss="modal"
 						>
 							Ingresar dinero
@@ -172,7 +172,7 @@
 						<button
 							type="submit"
 							id="btn-externTransf"
-							class="btn btn-dark"
+							class="btn btn-primary"
 							data-dismiss="modal"
 						>
 							Transferir dinero
@@ -217,7 +217,7 @@
 						<button
 							type="submit"
 							id="btn-exchangeMoney"
-							class="btn btn-dark"
+							class="btn btn-primary"
 							data-dismiss="modal"
 						>
 							Comprar
