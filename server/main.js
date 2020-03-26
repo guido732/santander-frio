@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const server = express();
 const axios = require("axios");
+const jwt = require("jsonwebtoken");
+const signature = "santanderfrio";
 
 let userDb = [
 	{
@@ -78,10 +80,28 @@ server.post("/v1/users/newuser", validateExistingUser, (req, res) => {
 });
 
 //User login
-server.post("/v1/users/login", userLogin, (req, res) => {
-	const { userData } = req;
-	isAuth = true;
-	res.status(200).json(userData);
+server.get("/v1/users/login", (req, res) => {
+	const { user, pass } = req.body;
+	try {
+		// IMPLEMENTAR CONEXION CON BD
+		// Acá va la búsqueda sobre la BD y si encuentra al usuario y matchea la pass sigue camino
+		const foundUser = { user: user, pass: pass, id: 1 };
+		if (foundUser.pass !== pass) {
+			res.status(400).send("Invalid username/password supplied");
+		} else if (foundUser.disabled) {
+			res.status(401).send("Invalid request, user account is disabled");
+		} else {
+			const token = generateToken({
+				user: foundUser.user,
+				id: foundUser.userID,
+			});
+			res.status(200).json(token);
+		}
+	} catch (error) {
+		console.log(error);
+
+		res.status(500).json(error);
+	}
 });
 
 // Deposit money
@@ -241,16 +261,6 @@ server.get("/v1/accounts/operations/getexangerate", getCurrencyExange, (req, res
 });
 
 // UTILS
-
-function validateAuth(req, res, next) {
-	const { dni } = req.body;
-	const user = findUser(dni);
-	if (user.isAuth) {
-		next();
-	} else {
-		res.status(403).send("403 - Forbidden");
-	}
-}
 function validateExistingUser(req, res, next) {
 	const { dni } = req.body;
 	const existingUser = findUser(dni, res);
@@ -271,23 +281,6 @@ function findUser(userDni, res) {
 function findUserData(userDni) {
 	const foundData = accounts.find(accounts => +accounts.dni === +userDni);
 	return foundData;
-}
-function userLogin(req, res, next) {
-	const { dni, password } = req.body;
-	const existingUser = findUser(dni);
-	if (existingUser) {
-		const userPassword = existingUser.password;
-		if (password === userPassword) {
-			const userData = findUserData(dni);
-			existingUser.isAuth = true;
-			req.userData = userData;
-			next();
-		} else {
-			res.status(401).json("Wrong password");
-		}
-	} else {
-		res.status(404).json("User does not exists");
-	}
 }
 function createAccount(dni, fullname) {
 	const newAccount = {
@@ -386,6 +379,9 @@ async function getCurrencyExange(req, res, next) {
 	} catch (error) {
 		res.status(400).send("Cannot get current exange rate. Try again later");
 	}
+}
+function generateToken(info) {
+	return jwt.sign(info, signature);
 }
 
 // ERROR DETECTION
