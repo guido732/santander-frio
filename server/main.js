@@ -5,6 +5,8 @@ const server = express();
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
 const signature = "santanderfrio";
+const Sequelize = require("sequelize");
+const sequelize = new Sequelize("mysql://root:delilah2020@localhost:3306/santander_frio");
 
 let userDb = [
 	{
@@ -69,6 +71,15 @@ server.listen(3000, () => {
 });
 
 server.use(bodyParser.json(), cors());
+
+sequelize
+	.authenticate()
+	.then(function(err) {
+		console.log("Connection has been established successfully.");
+	})
+	.catch(function(err) {
+		console.log("Unable to connect to the database:", err);
+	});
 
 // Register new user
 server.post("/v1/users/newuser", validateExistingUser, (req, res) => {
