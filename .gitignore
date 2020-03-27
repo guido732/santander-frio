@@ -110,3 +110,6 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
+
+# others
+server/db_connection_data.js
