@@ -5,8 +5,8 @@ const server = express();
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
 const signature = "santanderfrio";
-const Sequelize = require("sequelize");
-const sequelize = new Sequelize("mysql://root:delilah2020@localhost:3306/santander_frio");
+const sequelize = require("./server_setup");
+
 
 let userDb = [
 	{
