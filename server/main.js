@@ -132,6 +132,10 @@ server.get("/v1/users/login", (req, res) => {
 	}
 });
 
+server.get("/v1/test", validateToken, (req, res) => {
+	res.json("Token Válido");
+});
+
 // Deposit money
 server.put(
 	"/v1/accounts/operations/depositMoney",
@@ -289,6 +293,16 @@ server.get("/v1/accounts/operations/getexangerate", getCurrencyExange, (req, res
 });
 
 // UTILS
+function validateToken(req, res, next) {
+	const token = req.headers.authorization.split(" ")[1];
+	try {
+		const verification = jwt.verify(token, signature);
+		req.tokenInfo = verification;
+		next();
+	} catch (e) {
+		res.status(401).json("Invalid Token");
+	}
+}
 function validateExistingUser(req, res, next) {
 	const { dni } = req.body;
 	const existingUser = findUser(dni, res);
