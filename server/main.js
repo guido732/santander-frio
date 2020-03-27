@@ -6,6 +6,7 @@ const axios = require("axios");
 const jwt = require("jsonwebtoken");
 const signature = "santanderfrio";
 const sequelize = require("./server_setup");
+const { QueryTypes } = require("sequelize");
 
 let userDb = [
 	{
@@ -162,7 +163,7 @@ server.put(
 // User's accounts current status
 server.get("/v1/users/accounts", (req, res) => {
 	const { dni } = req.body;
-	const userData = findUserData(dni);
+	const userData = getAccountsData(dni);
 	res.status(200).json(userData);
 }); // El caso de error se maneja por el general, ya que este GET se hace una vez logueado el
 //Usuario por lo que el DNI ya esta previamente validado por los otros metodos.
@@ -400,6 +401,16 @@ async function getCurrencyExange(req, res, next) {
 }
 function generateToken(info) {
 	return jwt.sign(info, signature);
+}
+
+async function getAccountsData(dni) {
+	const accountData = await sequelize.query("SELECT * FROM cuentas WHERE user_id = ?", {
+		replacements: [dni],
+		type: QueryTypes.SELECT,
+	});
+	console.log(accountData);
+
+	return accountData;
 }
 
 // ERROR DETECTION
