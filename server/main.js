@@ -119,14 +119,13 @@ server.get("/v1/users/login", async (req, res) => {
 				type: sequelize.QueryTypes.SELECT,
 			},
 		);
-		if (!foundUser.length) {
-			res.status(400).send("Invalid username/password supplied");
-		} else {
+		if (!!foundUser.length) {
 			const token = generateToken({
-				user: foundUser.user,
-				id: foundUser.userID,
+				user: user,
 			});
 			res.status(200).json(token);
+		} else {
+			res.status(400).send("Invalid username/password supplied");
 		}
 	} catch (error) {
 		console.log(error);
@@ -163,9 +162,8 @@ server.put(
 );
 
 // User's accounts current status
-server.get("/v1/users/accounts", (req, res) => {
-	const { dni } = req.body;
-	const userData = getAccountsData(dni);
+server.get("/v1/users/accounts", validateToken, async (req, res) => {
+	const userData = await getAccountsData(req.tokenInfo.user);
 	res.status(200).json(userData);
 }); // El caso de error se maneja por el general, ya que este GET se hace una vez logueado el
 //Usuario por lo que el DNI ya esta previamente validado por los otros metodos.
@@ -301,6 +299,8 @@ function validateToken(req, res, next) {
 	try {
 		const verification = jwt.verify(token, signature);
 		req.tokenInfo = verification;
+		// console.log(verification);
+
 		next();
 	} catch (e) {
 		res.status(401).json("Invalid Token");
@@ -406,12 +406,10 @@ function generateToken(info) {
 }
 
 async function getAccountsData(dni) {
-	const accountData = await sequelize.query("SELECT * FROM cuentas WHERE user_id = ?", {
+	const accountData = await sequelize.query("SELECT * FROM cuentas WHERE id_user = ?", {
 		replacements: [dni],
 		type: QueryTypes.SELECT,
 	});
-	console.log(accountData);
-
 	return accountData;
 }
 
