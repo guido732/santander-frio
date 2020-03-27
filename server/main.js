@@ -109,16 +109,18 @@ server.post("/v1/users/newuser", validateExistingUser, async (req, res) => {
 });
 
 //User login
-server.get("/v1/users/login", (req, res) => {
+server.get("/v1/users/login", async (req, res) => {
 	const { user, pass } = req.body;
 	try {
-		// IMPLEMENTAR CONEXION CON BD
-		// Acá va la búsqueda sobre la BD y si encuentra al usuario y matchea la pass sigue camino
-		const foundUser = { user: user, pass: pass, id: 1 };
-		if (foundUser.pass !== pass) {
+		const foundUser = await sequelize.query(
+			"SELECT * FROM usuarios WHERE dni = ? AND password = ?",
+			{
+				replacements: [user, pass],
+				type: sequelize.QueryTypes.SELECT,
+			},
+		);
+		if (!foundUser.length) {
 			res.status(400).send("Invalid username/password supplied");
-		} else if (foundUser.disabled) {
-			res.status(401).send("Invalid request, user account is disabled");
 		} else {
 			const token = generateToken({
 				user: foundUser.user,
