@@ -7,7 +7,6 @@ const jwt = require("jsonwebtoken");
 const signature = "santanderfrio";
 const sequelize = require("./server_setup");
 
-
 let userDb = [
 	{
 		dni: "30111000",
@@ -82,11 +81,29 @@ sequelize
 	});
 
 // Register new user
-server.post("/v1/users/newuser", validateExistingUser, (req, res) => {
-	// TODO: Corroborar que las variables sean igual que lo que se manda desde el front
-	const { dni, password, fullname } = req.body;
-	userDb.push({ dni, password });
-	createAccount(dni, fullname);
+server.post("/v1/users/newuser", validateExistingUser, async (req, res) => {
+	const { dni, password, fullname: name } = req.body;
+	const createUser = await sequelize.query(
+		"INSERT INTO usuarios (dni, name, password) VALUES (?,?,?)",
+		{
+			replacements: [dni, name, password],
+			type: sequelize.QueryTypes.INSERT,
+		},
+	);
+	const createAccountPeso = await sequelize.query(
+		"INSERT INTO cuentas (id_user, currency) VALUES (?,?)",
+		{
+			replacements: [dni, "ars"],
+			type: sequelize.QueryTypes.INSERT,
+		},
+	);
+	const createAccountDollar = await sequelize.query(
+		"INSERT INTO cuentas (id_user, currency) VALUES (?,?)",
+		{
+			replacements: [dni, "usd"],
+			type: sequelize.QueryTypes.INSERT,
+		},
+	);
 	res.status(200).json("User created");
 });
 
@@ -292,30 +309,6 @@ function findUser(userDni, res) {
 function findUserData(userDni) {
 	const foundData = accounts.find(accounts => +accounts.dni === +userDni);
 	return foundData;
-}
-function createAccount(dni, fullname) {
-	const newAccount = {
-		fullname: fullname,
-		dni: dni,
-		accounts: [
-			{
-				accountNumber: generateNewAccountNumber(),
-				currency: "$",
-				balance: 0,
-				extractionLimit: 1000,
-			},
-			{
-				accountNumber: generateNewAccountNumber(),
-				currency: "US$",
-				balance: 0,
-				extractionLimit: 1000,
-			},
-		],
-	};
-	accounts.push(newAccount);
-}
-function generateNewAccountNumber() {
-	return Math.floor(Math.random() * 100000000);
 }
 function getActiveUser(req, res, next) {
 	const { userID } = req.body;
